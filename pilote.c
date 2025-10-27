@@ -104,7 +104,29 @@ void menuEditPoints() {
     updatePointsOfPilote(option - 1, editPoint);
 }
 
+void mainMenu() {
+    int choix;
+    do {
+        printf("\n=== MENU PRINCIPAL ===\n");
+        printf("1. Menu pilote\n");
+        printf("2. Quitter\n");
+        scanf("%d", &choix);
+
+        switch (choix) {
+            case 1:
+                menuPilote();
+                break;
+            case 2:
+                printf("Au revoir !");
+                return;
+            default:
+                printf("Choix invalide !");
+        }
+    } while (choix != 2);
+}
+
 void menuPilote() {
+    // menu qui va permettre de choisir entre ajouter / delete / edit points pilote
     int choix;
     do {
         printf("\n=== MENU PILOTE ===\n");
@@ -163,7 +185,7 @@ void menuNewPilote() {
 
     // creer fonction ecurieExiste dans ecurie.c
     printf("Quel est le nom de l'ecurie du pilote : ");
-    scanf(" %[^\n]", ecurie); // l'espace avant : % -> clear le buffer, tant qu'on ne retourne pas a la ligne
+    scanf(" %[^\n]", ecurie); // l'espace avant : % -> clear le buffer et tant qu'on ne retourne pas a la ligne
                                     // alors on scan se que dit l'utilisateur
     do {
         printf("Quel est le nombre de point du pilote : ");

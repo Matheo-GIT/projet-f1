@@ -28,7 +28,7 @@ void displayPilote(int index);
 void displayTousPilotes();
 void updatePointsOfPilote(int index, int modifPoints);
 
-void menu();
+void mainMenu();
 void menuPilote();
 void menuNewPilote();
 void menuDeletePilote();
