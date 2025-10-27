@@ -2,10 +2,9 @@
 #include "pilote.h"
 
 int main() {
-    newPilote("Jean", "Sora", "France", "Ferrari", 0, 16, 49, 0);
 
-    printf("\nAprès ajout :\n");
+    newPilote("test", "test", "test", "test", 0, 18, 18, 1);
+    menuEditPoints();
     displayTousPilotes();
-
     return 0;
 }
