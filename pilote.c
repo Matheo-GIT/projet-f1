@@ -30,6 +30,7 @@ void newPilote(const char* nom, const char* prenom, const char* nationalite,
     strcpy(pilotes[nb_pilotes].nationalite, nationalite);
     strcpy(pilotes[nb_pilotes].ecurie, ecurie);
 
+    pilotes[nb_pilotes].points = points;
     pilotes[nb_pilotes].numero = numero;
     pilotes[nb_pilotes].age = age;
     pilotes[nb_pilotes].actif = actif;

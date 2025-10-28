@@ -9,4 +9,6 @@ add_executable(TEST_GRAND_PRIX main.c
         ecurie.c
         ecurie.h
         menu.c
-        menu.h)
+        menu.h
+        GrandPrix.c
+        GrandPrix.h)

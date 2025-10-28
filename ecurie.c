@@ -26,9 +26,9 @@ void newEcurie(const char* nom, const char* pays, int points, int anneCreation, 
 
     nb_ecurie++;
 }
-
+// Probleme suppr
 void deleteEcurie(int index) {
-    if (index < 0 || index >= nb_pilotes) {
+    if (index < 0 || index >= nb_ecurie) {
         printf("Erreur : l'index est invalide\n");
         return;
     }
@@ -38,7 +38,8 @@ void deleteEcurie(int index) {
         ecuries[i] = ecuries[i + 1];
     }
 
-    nb_pilotes--;
+    nb_ecurie--;
+
     printf("Ecurie supprime avec succes.\n");
 }
 

@@ -295,7 +295,7 @@ void menuDeleteEcurie() {
     }
     printf("Quel ecurie voulez vous supprimez : ");
     scanf("%d", &option);
-    deleteEcurie(option-1);
+    deleteEcurie(option);
 }
 
 void menuDisplayEcurie() {
