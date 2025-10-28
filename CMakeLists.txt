@@ -5,4 +5,8 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(TEST_GRAND_PRIX main.c
         pilote.c
-        pilote.h)
+        pilote.h
+        ecurie.c
+        ecurie.h
+        menu.c
+        menu.h)

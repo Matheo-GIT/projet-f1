@@ -1,5 +1,6 @@
 #include <string.h>
 #include "pilote.h"
+#include "menu.h"
 
 #include <stdlib.h>
 
@@ -64,167 +65,24 @@ int piloteExiste(const char* nom, const char* prenom) {
     return -1;
 }
 
+// affiche 1 pilote
 void displayPilote(int index) {
-    printf("Nom : %s | Prenom : %s | Nationalite : %s | Ecurie : %s | Points : %d | Numero : %d | Age : %d | Actif : %d\n",
-           pilotes[index].nom, pilotes[index].prenom, pilotes[index].nationalite,
-           pilotes[index].ecurie, pilotes[index].points, pilotes[index].numero, pilotes[index].age, pilotes[index].actif);
+    printf("Nom : %-12s | Prenom : %-8s | Nationalite : %-11s | Ecurie : %-16s | Points : %3d | Numero : %3d | Age : %3d | Actif : %d\n",
+           pilotes[index].nom,
+           pilotes[index].prenom,
+           pilotes[index].nationalite,
+           pilotes[index].ecurie,
+           pilotes[index].points,
+           pilotes[index].numero,
+           pilotes[index].age,
+           pilotes[index].actif);
+    printf("\n");
 }
 
+
+// affiche tout les pilotes
 void displayTousPilotes() {
     for (int i = 0; i < nb_pilotes; i++) {
         displayPilote(i);
     }
-}
-
-void menuDeletePilote() {
-    int option;
-    for (int i = 0; i < nb_pilotes; i++) {
-        printf("%d. %s %s\n", i+1, pilotes[i].nom, pilotes[i].prenom);
-    }
-    printf("Quel pilote voulez vous supprimez : ");
-    scanf("%d", &option);
-    deletePilote(option-1);
-}
-
-void menuEditPoints() {
-    int option, editPoint;
-    for (int i = 0; i < nb_pilotes; i++) {
-        printf("%d. %s %s | %d\n", i+1, pilotes[i].nom, pilotes[i].prenom, pilotes[i].points);
-    }
-    printf("A quel pilote voulez vous modifier les points : ");
-    scanf("%d", &option);
-    // option doit etre compris entre 0 et nb_pilote
-    do {
-        printf("Quel est le nouveau nombre de points : ");
-        scanf("%d", &editPoint);
-        if (editPoint < 0) {
-            printf("Erreur : le nouveau nombre de points ne peut pas etre negatif\n");
-        }
-    } while (editPoint < 0);
-    updatePointsOfPilote(option - 1, editPoint);
-}
-
-void mainMenu() {
-    int choix;
-    do {
-        printf("\n=== MENU PRINCIPAL ===\n");
-        printf("1. Menu pilote\n");
-        printf("2. Quitter\n");
-        scanf("%d", &choix);
-
-        switch (choix) {
-            case 1:
-                menuPilote();
-                break;
-            case 2:
-                printf("Au revoir !");
-                return;
-            default:
-                printf("Choix invalide !");
-        }
-    } while (choix != 2);
-}
-
-void menuPilote() {
-    // menu qui va permettre de choisir entre ajouter / delete / edit points pilote
-    int choix;
-    do {
-        printf("\n=== MENU PILOTE ===\n");
-        printf("1. Ajouter un pilote\n");
-        printf("2. Retour\n");
-        printf("Votre choix : ");
-        scanf("%d", &choix);
-
-        switch (choix) {
-            case 1:
-                menuNewPilote();  // on appelle la fonction d’ajout
-                break;
-            case 2:
-                printf("Retour au menu principal...\n");
-                break;
-            default:
-                printf("Choix invalide !\n");
-                break;
-        }
-    } while (choix != 2);
-}
-
-
-void menuNewPilote() {
-    char nom[50], prenom[50], nationalite[50], ecurie[50];
-    int points, numero, age, actif;
-
-    if (nb_pilotes >= MAX_PILOTE) {
-        printf("Tableau de pilotes plein !\n");
-        return;
-    }
-
-    printf("\n=== MENU D'AJOUT DE PILOTE ===\n");
-    // saisie nom/prenom avec vérifications
-    do {
-        printf("Quel est le nom du pilote : ");
-        scanf("%49s", nom);
-
-        printf("Quel est le prenom du pilote : ");
-        scanf("%49s", prenom);
-
-        if (strlen(nom) == 0 || strlen(prenom) == 0) {
-            printf("Erreur : le nom et le prénom ne doivent pas être vides.\n");
-        }
-        else if (piloteExiste(nom, prenom) != -1) {
-            printf("Erreur : ce pilote existe déjà.\n");
-        }
-
-
-    } while (strlen(nom) == 0 || strlen(prenom) == 0 || piloteExiste(nom, prenom) != -1);
-
-
-
-    printf("Quel est la nationalite du pilote : ");
-    scanf("%s", nationalite);
-
-    // creer fonction ecurieExiste dans ecurie.c
-    printf("Quel est le nom de l'ecurie du pilote : ");
-    scanf(" %[^\n]", ecurie); // l'espace avant : % -> clear le buffer et tant qu'on ne retourne pas a la ligne
-                                    // alors on scan se que dit l'utilisateur
-    do {
-        printf("Quel est le nombre de point du pilote : ");
-        scanf("%d", &points);
-        if (points < 0) {
-            printf("Erreur : le nombre de point doit etre positif\n");
-        }
-    } while (points < 0);
-
-
-    do {
-        printf("Quel est le numero du pilote : ");
-        scanf("%d", &numero);
-        if (numero <= 0 || numero >= 100) {
-            printf("Erreur : le numero doit etre compris entre 1 et 99\n");
-        }
-    } while (numero <= 0 || numero >= 100);
-
-
-    do {
-        printf("Quel est l'age du pilote : ");
-        scanf("%d", &age);
-
-        if (age < 18 || age > 50) {
-            printf("Erreur : l'age doit etre compris entre 18 et 50 ans\n");
-        }
-
-    } while (age < 18 || age > 50);
-
-
-    do {
-        printf("Est ce que le pilote est actif ? (1. Oui / 0. Non) : ");
-        scanf("%d", &actif);
-        if (actif != 1 && actif != 0) {
-            printf("Erreur : veuillez entrer 1 (Actif) ou 0 (Non actif)\n");
-        }
-    } while (actif != 1 && actif != 0);
-
-
-    newPilote(nom, prenom, nationalite, ecurie, points, numero, age, actif);
-    printf("\nCreation reussi");
 }
