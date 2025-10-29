@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "pilote.h"
 #include "menu.h"
 #include "ecurie.h"
@@ -11,13 +10,18 @@ int main() {
     newGrandPrix("Silverstone", "Royaume-Uni", 52, (Date){7,7,2024}, (Heure){14,0}, 1);
 
 
+    // finir menu ajouter un grand prix
+
+
     //updateResultGranPrix(); <- gaver long sa mere a faire
     //car faut rentrer tout les temps a la main 1 par 1 + faut bien écrire avec les : (ex : 0:00:00:000)
     //displayTempsPilotes(2);
-    displayTousGrandPrix();
-    deleteGrandPrix(1);
-    displayTousGrandPrix();
-
+    //displayTousGrandPrix();
+    //deleteGrandPrix(1); // faut que sa delete aussi les résultats du grand prix
+    //displayTousGrandPrix();
+    //updateResultGranPrix();
+    //displayTempsPilotes(1);
+    menuNewGrandPrix();
 
     return 0;
 }

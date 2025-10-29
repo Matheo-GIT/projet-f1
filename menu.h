@@ -19,9 +19,16 @@ void menuDeleteEcurie();
 void menuEditPointsEcurie();
 void menuDisplayEcurie();
 
+
+
+
 // === MENU GRAND PRIX ===
-//void menuNewGrandPrix();
+void menuNewGrandPrix();
 //void menuDeleteGrandPrix();
 //void menuEditTimeGrandPrix();
 //void menuDisplayGrandPrix();
+
+// === AUTRE FONCTION ===
+int estBissextile(int annee);
+
 #endif //TEST_GRAND_PRIX_MENU_H

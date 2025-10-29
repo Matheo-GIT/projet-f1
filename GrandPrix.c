@@ -92,10 +92,7 @@ void updateResultGranPrix() {
             }
         } while (sscanf(nv_temps, "%d:%d:%d:%d", &h, &m, &s, &ms) != 4);
         strcpy(resultat[i].tempsRealise, nv_temps);
-    }
 
-    for (int i = 0; i < nb_pilotes; i++) {
-        // je boucle sur tout mes pilotes pour demander leur position et si la pos existe deja (ini à 0) alors je redemande
         do {
             printf("Entrez la position du pilote \"%s %s\": ", resultat[i].prenomPilote, resultat[i].nomPilote);
             scanf("%d%*c", &position); // %*c "mange" le retour a la ligne donc clear le buffer
@@ -127,6 +124,7 @@ void updateResultGranPrix() {
             default: resultat[i].pointsObtenus = 0;  break;
         }
     }
+
 }
 
 void deleteGrandPrix(int indexGranPrix) {
@@ -186,8 +184,8 @@ void displayTousGrandPrix() {
 
 
 void displayTempsPilotes(int numGrandPrix) {
-    printf("Affichage des temps pour le Grand Prix au %s\n", grandPrix[numGrandPrix - 1].pays);
+    printf("Affichage des temps pour le Grand Prix au %s\n", grandPrix[numGrandPrix ].pays);
     for (int i = 0; i < nb_pilotes; i++) {
-        printf("%d. %-10s %-10s | Tps : %s\n", i + 1, pilotes[i].prenom, pilotes[i].nom, resultat[numGrandPrix - 1].tempsRealise);
+        printf("%d. %-10s %-10s | Tps : %s\n", i + 1, pilotes[i].prenom, pilotes[i].nom, resultat[numGrandPrix].tempsRealise);
     }
 }

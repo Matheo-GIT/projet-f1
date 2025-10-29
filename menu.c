@@ -21,7 +21,7 @@ void mainMenu() {
                 menuEcurie();
                 break;
             case 3:
-                printf("Au revoir !"); // ça marche pas ça marche pas
+                printf("Au revoir !");
                 break;
             default:
                 printf("Choix invalide !");
@@ -376,11 +376,74 @@ void menuGrandPrix() {
                 displayTousGrandPrix();
                 break;
             case 6:
-                printf("Retour au menu principal...n");
+                printf("Retour au menu principal...\n");
                 return;
             default:
                 printf("Choix invalide !\n");
                 break;
         }
     } while (choix != 5);
+}
+
+void menuNewGrandPrix() {
+    char nomCircuit[50], pays[50];
+    int nombreTours;
+    int jour, mois, annee;
+    int heure, minute;
+    // créer un résultat par GP
+    int actif;
+
+    printf("Entrez le nom du circuit : ");
+    scanf(" %[^\n]", nomCircuit);
+
+    printf("Entrez le pays : ");
+    scanf(" %[^\n]", pays);
+
+    do {
+        printf("Entrez le nombre de tour du circuit : ");
+        scanf(" %d", &nombreTours);
+        if (nombreTours < 10 || nombreTours > 100) {
+            printf("Erreur : le nombre de tour doit etre compris entre 10 et 100\n");
+        }
+    } while (nombreTours < 10 || nombreTours > 100);
+
+    do {
+        printf("Entrez le mois du Grand Prix : \n");
+        printf("1. Janvier | 2. Fevrier | 3. Mars | 4. Avril | 5. Mai | 6. Juin\n"
+               "7. Juillet | 8. Aout | 9. Septembre | 10. Octobre | 11. Novembre | 12. Decembre\n");
+        scanf(" %d", &mois);
+        if (mois < 1 || mois > 12) {
+            printf("Erreur : Vous avez entrez un mois invalide\n");
+        }
+    } while (mois < 1 || mois > 12);
+
+    // initialisation des jours dans un mois pour plus de simpliciter dans la vérification
+    int joursParMois[12] = {31,29,31,30,31,30,31,31,30,31,30,31};
+    do {
+        printf("Entrez le jour du Grand Prix : ");
+        scanf(" %d", &jour);
+
+        if (jour < 1 || jour > joursParMois[mois - 1]) {
+            printf("Erreur : vous avez choisis un jour en dehors du mois\n");
+        }
+    } while (jour < 1 || jour > joursParMois[mois - 1]);
+
+
+}
+
+
+
+
+
+
+
+
+int estBissextile(int annee) {
+    // Une année est bissextile si :
+    // - elle est divisible par 4
+    // - mais pas par 100, sauf si elle est aussi divisible par 400
+    if ((annee % 4 == 0 && annee % 100 != 0) || (annee % 400 == 0)) {
+        return 1; // bissextile
+    }
+    return 0;
 }
