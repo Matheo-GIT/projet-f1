@@ -44,9 +44,10 @@ extern ResultatCourse resultat[MAX_RESULTATS];
 
 
 void newGrandPrix(const char* nomCircuit, const char* pays, int nombreTours,
-                  Date date, Heure horaire, int nombreResultat, int actif);
+                  Date date, Heure horaire, int actif);
 void updateResultGranPrix();
-void displayGrandPrix();
+void displayGrandPrix(int indexGrandPrix);
+void displayTousGrandPrix();
 void deleteGrandPrix(int indexGranPrix);
 void displayTempsPilotes(int numGrandPrix);
 

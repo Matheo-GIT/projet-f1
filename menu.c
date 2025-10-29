@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "pilote.h"
 #include "ecurie.h"
+#include "GrandPrix.h"
 
 
 void mainMenu() {
@@ -340,4 +341,46 @@ void menuEditPointsEcurie() {
         }
     } while (modifPoints < 0 || modifPoints == ecuries[choix - 1].Points);
     updatePointsOfEcurie(choix - 1, modifPoints);
+}
+
+
+
+// ============================================= MENU PILOTE =============================================
+
+void menuGrandPrix() {
+    int choix;
+    printf("1. Ajouter un Grand Prix\n");
+    printf("2. Supprimer un Grand Prix\n");
+    printf("3. Modifier les temps d'un Grand Prix\n");
+    printf("4. Afficher un Grand Prix\n");
+    printf("5. Afficher tous les Grand Prix\n");
+    printf("6. Retour\n");
+
+    do {
+        printf("Votre choix : ");
+        scanf(" %d", &choix);
+        switch (choix) {
+            case 1:
+                //menuNewGrandPrix();
+                break;
+            case 2:
+                //menuDeleteGrandPrix();
+                break;
+            case 3:
+                //menuEditTimeGrandPrix();
+                break;
+            case 4:
+                // menuDisplayGrandPrix();
+                break;
+            case 5:
+                displayTousGrandPrix();
+                break;
+            case 6:
+                printf("Retour au menu principal...n");
+                return;
+            default:
+                printf("Choix invalide !\n");
+                break;
+        }
+    } while (choix != 5);
 }

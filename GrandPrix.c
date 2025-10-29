@@ -1,4 +1,5 @@
 #include "GrandPrix.h"
+#include "pilote.h"
 #include <string.h>
 
 ResultatCourse resultat[MAX_RESULTATS] = {
@@ -44,29 +45,26 @@ int nb_resultat = 1;
 
 
 void newGrandPrix(const char* nomCircuit, const char* pays, int nombreTours,
-                  Date date, Heure horaire, int nombreResultat, int actif) {
+                  Date date, Heure horaire, int actif) {
 
-    strcpy(grandPrix[nb_grandprix].nomCircuit, nomCircuit);
-    strcpy(grandPrix[nb_grandprix].pays, pays);
-    grandPrix[nb_grandprix].nombreTours = nombreTours;
-    grandPrix[nb_grandprix].date = date;
-    grandPrix[nb_grandprix].horaire = horaire;
-    grandPrix[nb_grandprix].nombreResultat = nombreResultat;
-    grandPrix[nb_grandprix].actif = actif;
+    GrandPrix* gp = &grandPrix[nb_grandprix]; // pointeur vers le GP en cours
 
-    // Copie des résultats
-    for (int i = 0; i < nombreResultat; i++) {
-        grandPrix[nb_grandprix].resultat[i] = resultat[i];
-    }
+    strcpy(gp->nomCircuit, nomCircuit);
+    strcpy(gp->pays, pays);
+    gp->nombreTours = nombreTours;
+    gp->date = date;
+    gp->horaire = horaire;
+    gp->actif = actif;
+    gp->nombreResultat = nb_pilotes; // un résultat par pilote
 
-    // nb_resultat + 1 car nouveau grand prix donc un resultat en plus
-    // je doit mettre tous les pilotes dedans
+    // pour chaque pilote on créer un "résultat vierge" dans le GP
     for (int i = 0; i < nb_pilotes; i++) {
-        strcpy(resultat[nb_grandprix].nomPilote, pilotes[i].nom);
-        strcpy(resultat[nb_grandprix].prenomPilote, pilotes[i].prenom);
-        strcpy(resultat[nb_grandprix].nationnalitePilote, pilotes[i].nationalite);
-        resultat[nb_grandprix].position = i + 1;
-        strcpy(resultat[nb_grandprix].tempsRealise, "0:00:00:000");
+        strcpy(gp->resultat[i].nomPilote, pilotes[i].nom);
+        strcpy(gp->resultat[i].prenomPilote, pilotes[i].prenom);
+        strcpy(gp->resultat[i].nationnalitePilote, pilotes[i].nationalite);
+        gp->resultat[i].position = 0;
+        strcpy(gp->resultat[i].tempsRealise, "0:00:00:000");
+        gp->resultat[i].pointsObtenus = 0;
     }
 
     nb_grandprix++;
@@ -75,6 +73,9 @@ void newGrandPrix(const char* nomCircuit, const char* pays, int nombreTours,
 void updateResultGranPrix() {
     int h, m, s, ms;
     char nv_temps[20];
+    int position = 0;
+    int positionPrise[MAX_RESULTATS] = {0};
+
     // afficher chaque pilote et demander sa position / son temps / les points sont calculer en fonction de la position
     for (int i = 0; i < nb_pilotes; i++) {
         printf("%d. %-10s %-10s | Tps : %s\n", i + 1, resultat[i].prenomPilote, resultat[i].nomPilote,
@@ -90,7 +91,41 @@ void updateResultGranPrix() {
                 printf("Format invalide ! Essayez encore (ex: 1:23:45:678)\n");
             }
         } while (sscanf(nv_temps, "%d:%d:%d:%d", &h, &m, &s, &ms) != 4);
-        strcpy(resultat[i].prenomPilote, nv_temps);
+        strcpy(resultat[i].tempsRealise, nv_temps);
+    }
+
+    for (int i = 0; i < nb_pilotes; i++) {
+        // je boucle sur tout mes pilotes pour demander leur position et si la pos existe deja (ini à 0) alors je redemande
+        do {
+            printf("Entrez la position du pilote \"%s %s\": ", resultat[i].prenomPilote, resultat[i].nomPilote);
+            scanf("%d%*c", &position); // %*c "mange" le retour a la ligne donc clear le buffer
+
+            if (position <= 0 ||position > nb_pilotes) {
+                printf("Position invalide : la position doit etre compris entre 1 et %d\n", nb_pilotes);
+            }
+            // si positionPrise[position - 1] == 1
+            else if (positionPrise[position - 1]) {
+                printf("Cette positon est deja prise\n");
+            }
+        } while (position <= 0 || position > nb_pilotes || positionPrise[position - 1]);
+
+        resultat[i].position = position;
+        positionPrise[position - 1] = 1; // marquer comme utilisée
+
+        // attributions des points selon la position
+        switch (position) {
+            case 1:  resultat[i].pointsObtenus = 25; break;
+            case 2:  resultat[i].pointsObtenus = 18; break;
+            case 3:  resultat[i].pointsObtenus = 15; break;
+            case 4:  resultat[i].pointsObtenus = 12; break;
+            case 5:  resultat[i].pointsObtenus = 10; break;
+            case 6:  resultat[i].pointsObtenus = 8;  break;
+            case 7:  resultat[i].pointsObtenus = 6;  break;
+            case 8:  resultat[i].pointsObtenus = 4;  break;
+            case 9:  resultat[i].pointsObtenus = 2;  break;
+            case 10: resultat[i].pointsObtenus = 1;  break;
+            default: resultat[i].pointsObtenus = 0;  break;
+        }
     }
 }
 
@@ -99,8 +134,8 @@ void deleteGrandPrix(int indexGranPrix) {
         printf("Erreur : index invalide\n");
         return;
     }
-    printf("Le Grand Prix %s va etre supprimer\n", grandPrix[indexGranPrix].nomCircuit);
-    for (int i = indexGranPrix; i < nb_grandprix - 1; i++) {
+    printf("\nLe Grand Prix \"%s\" va etre supprimer\n", grandPrix[indexGranPrix].nomCircuit);
+    for (int i = indexGranPrix; i < nb_grandprix; i++) {
         grandPrix[i] = grandPrix[i + 1];
     }
     nb_grandprix--;
@@ -108,9 +143,28 @@ void deleteGrandPrix(int indexGranPrix) {
 }
 
 
-void displayGrandPrix() {
+// affiche 1 grand prix
+void displayGrandPrix(int indexGrandPrix) {
     if (nb_grandprix == 0) {
-        printf("Aucun Grand Prix n'est enregistré.\n");
+        printf("Aucun Grand Prix n'est enregistré\n");
+        return;
+    }
+
+    printf("\n=== Grand Prix %d ===\n", indexGrandPrix);
+    printf("Circuit : %s | Pays : %s | Tours : %d\n", grandPrix[indexGrandPrix - 1].nomCircuit,
+        grandPrix[indexGrandPrix - 1].pays, grandPrix[indexGrandPrix - 1].nombreTours);
+
+    printf("Date : %02d/%02d/%d | Horaire : %02d:%02d\n",
+           grandPrix[indexGrandPrix - 1].date.jour, grandPrix[indexGrandPrix - 1].date.mois, grandPrix[indexGrandPrix - 1].date.annee,
+           grandPrix[indexGrandPrix - 1].horaire.heures, grandPrix[indexGrandPrix - 1].horaire.minutes);
+
+    printf("Nombre de resultats : %d\n", grandPrix[indexGrandPrix - 1].nombreResultat);
+    printf("Actif : %s\n", grandPrix[indexGrandPrix - 1].actif ? "Oui" : "Non"); // si actif=1 alors affiche "Oui" sinon affiche "Non"
+}
+
+void displayTousGrandPrix() {
+    if (nb_grandprix == 0) {
+        printf("Aucun Grand Prix n'est enregistré\n");
         return;
     }
 
@@ -125,13 +179,14 @@ void displayGrandPrix() {
         printf("Nombre de resultats : %d\n", gp->nombreResultat);
         printf("Actif : %s\n", gp->actif ? "Oui" : "Non"); // si actif=1 alors affiche "Oui" sinon affiche "Non"
 
-        // peut etre afficher le classement des grandpris ?
     }
 }
 
 
+
+
 void displayTempsPilotes(int numGrandPrix) {
-    printf("Affichage des temps pour le Grand Prix a %s\n", grandPrix[numGrandPrix - 1].pays);
+    printf("Affichage des temps pour le Grand Prix au %s\n", grandPrix[numGrandPrix - 1].pays);
     for (int i = 0; i < nb_pilotes; i++) {
         printf("%d. %-10s %-10s | Tps : %s\n", i + 1, pilotes[i].prenom, pilotes[i].nom, resultat[numGrandPrix - 1].tempsRealise);
     }
