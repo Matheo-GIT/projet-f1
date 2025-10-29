@@ -26,7 +26,8 @@ void newEcurie(const char* nom, const char* pays, int points, int anneCreation, 
 
     nb_ecurie++;
 }
-// Probleme suppr
+
+// Probleme regler c'était juste un : - 1
 void deleteEcurie(int index) {
     if (index < 0 || index >= nb_ecurie) {
         printf("Erreur : l'index est invalide\n");
@@ -48,13 +49,13 @@ void displayEcurie(int index) {
         printf("Erreur : l'index (ecurie) est invalide\n");
         return;
     }
-    printf("Ecurie : %-16s | Pays : %-12s | Pts : %-3d | Annee Creation : %-5d | Directeur : %-13s | Actif : %-2d\n",
+    printf("Ecurie : %-16s | Pays : %-12s | Pts : %-2d | Annee Creation : %-4d | Directeur : %-13s | Actif : %-10s\n",
         ecuries[index].Nom,
         ecuries[index].Pays,
         ecuries[index].Points,
         ecuries[index].anneeCreation,
         ecuries[index].Directeur,
-        ecuries[index].Actif);
+        ecuries[index].Actif ? "Oui" : "Non");
 }
 
 void displayTousEcurie() {

@@ -1,5 +1,6 @@
 #include <string.h>
 #include "pilote.h"
+#include "GrandPrix.h"
 #include "menu.h"
 
 #include <stdlib.h>
@@ -35,6 +36,16 @@ void newPilote(const char* nom, const char* prenom, const char* nationalite,
     pilotes[nb_pilotes].age = age;
     pilotes[nb_pilotes].actif = actif;
 
+
+    // ajout du pilotes dans les resultat des courses
+    strcpy(resultat[nb_pilotes].nomPilote, nom);
+    strcpy(resultat[nb_pilotes].prenomPilote, prenom);
+    strcpy(resultat[nb_pilotes].nationnalitePilote, nationalite);
+    resultat[nb_pilotes].position = 0;
+    strcpy(resultat[nb_pilotes].tempsRealise, "0:00:00:000");
+    resultat[nb_pilotes].pointsObtenus = 0;
+
+    grandPrix[nb_grandprix - 1].nombreResultat++; // ajoute 1 pilote donc le nombre de résultat augmente aussi
     nb_pilotes++;
 }
 

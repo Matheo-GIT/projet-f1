@@ -1,50 +1,53 @@
-//
-// Created by theom on 28/10/2025.
-//
+#ifndef GRAND_PRIX_GRANDPRIX_H
+#define GRAND_PRIX_GRANDPRIX_H
 
-#ifndef TEST_GRAND_PRIX_GRANDPRIX_H
-#define TEST_GRAND_PRIX_GRANDPRIX_H
-#define MAX_GRANDPRIX 3
 #include "pilote.h"
+
+#define MAX_GRANDPRIX 3
+#define MAX_RESULTATS 20
+
 typedef struct {
     int jour;
     int mois;
     int annee;
-}DATE;
+} Date;
 
 typedef struct {
     int heures;
     int minutes;
-}HEURE;
+} Heure;
 
 typedef struct {
-    Pilote nom[50];
-    Pilote prenom[50];
-    Pilote nationalite[50];
-    Pilote Position;
-    char tempsRealise;
+    char nomPilote[50];
+    char prenomPilote[50];
+    char nationnalitePilote[50];
+    int position;
+    char tempsRealise[20];
     int pointsObtenus;
-
-}ResultatCourse;
-ResultatCourse Resultat[20];
+} ResultatCourse;
 
 typedef struct {
     char nomCircuit[50];
-    char Pays[50];
+    char pays[50];
     int nombreTours;
-    DATE Date;
-    HEURE Horaire;
-    ResultatCourse Resultat[20];
-    int nombreResultat;
-    int Actif;
+    Date date;
+    Heure horaire;
+    ResultatCourse resultat[MAX_RESULTATS];
+    int nombreResultat; // nb de resultat suivant le nb de pilote
+    int actif;
+} GrandPrix;
 
-}GrandPrix;
 
-extern GrandPrix grand_prix[MAX_GRANDPRIX];
+extern GrandPrix grandPrix[MAX_GRANDPRIX];
 extern int nb_grandprix;
+extern ResultatCourse resultat[MAX_RESULTATS];
 
-void newGrandPrix(const char* nomCircuit,const char* Pays,const char* nombreTours,DATE date,HEURE Horaire,ResultatCourse Resultat[20],int nombreResulat,int Actif);
 
-void deleteGrandPrix();
+void newGrandPrix(const char* nomCircuit, const char* pays, int nombreTours,
+                  Date date, Heure horaire, int nombreResultat, int actif);
+void updateResultGranPrix();
+void displayGrandPrix();
+void deleteGrandPrix(int indexGranPrix);
+void displayTempsPilotes(int numGrandPrix);
 
-#endif //TEST_GRAND_PRIX_GRANDPRIX_H
+#endif // GRAND_PRIX_GRANDPRIX_H
