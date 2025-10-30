@@ -64,6 +64,8 @@ void newGrandPrix(const char* nomCircuit, const char* pays, int nombreTours,
         strcpy(grandPrix[nb_grandprix].resultat[i].tempsRealise, "0:00:00:000");
         grandPrix[nb_grandprix].resultat[i].pointsObtenus = 0;
     }
+    printf("Nouveau Grand Prix ajoute : %s (%s), %d tours le %02d/%02d/%d a %02d:%02d\n",
+           nomCircuit, pays, nombreTours, date.jour, date.mois, date.annee, horaire.heures, horaire.minutes);
 
     nb_grandprix++;
 }
@@ -130,12 +132,23 @@ void deleteGrandPrix(int indexGranPrix) {
         printf("Erreur : index invalide\n");
         return;
     }
+    // delete le grand prix
     printf("\nLe Grand Prix \"%s\" va etre supprimer\n", grandPrix[indexGranPrix].nomCircuit);
-    for (int i = indexGranPrix; i < nb_grandprix; i++) {
+    printf("Les resultats du Grand Prix \"%s\" vont etre supprimer\n\n", grandPrix[indexGranPrix].nomCircuit);
+    for (int i = indexGranPrix; i < nb_grandprix - 1; i++) {
         grandPrix[i] = grandPrix[i + 1];
     }
+
+    // delete les résultats du grand prix
+    for (int i = indexGranPrix; i < nb_resultat - 1; i++) {
+        resultat[i] = resultat[i + 1];
+    }
+
+
     nb_grandprix--;
+    nb_resultat--;
     printf("Grand Prix supprimer avec succes\n");
+    printf("Resultat supprimer avec succes\n\n");
 }
 
 
@@ -182,8 +195,32 @@ void displayTousGrandPrix() {
 
 
 void displayTempsPilotes(int numGrandPrix) {
-    printf("Affichage des temps pour le Grand Prix au %s\n", grandPrix[numGrandPrix ].pays);
-    for (int i = 0; i < nb_pilotes; i++) {
-        printf("%d. %-10s %-10s | Tps : %s\n", i + 1, pilotes[i].prenom, pilotes[i].nom, resultat[numGrandPrix].tempsRealise);
+    // faire : int index = numGrandPrix - 1; aurait été plus simple à comprendre et moins de chose sur l'écran mais
+    // pour le débugage je trouve ça mieux
+
+    if (numGrandPrix - 1 < 0 || numGrandPrix - 1 >= nb_grandprix) {
+        printf("Erreur : ce Grand Prix n'existe pas\n");
+        return;
+    }
+
+    printf("\n=== Temps des pilotes pour le Grand Prix de %s (%s) ===\n",
+           grandPrix[numGrandPrix - 1].nomCircuit, grandPrix[numGrandPrix - 1].pays); // on aurait pus utiliser un pointeur à la place de tout re ecrire
+                                                                // mais je prefere comme ça car lors du débugage c'est plus simple de comprendre
+                                                                // GrandPrix* gp = &grandPrix[index]; donc gp->resultat[i].position
+
+    for (int i = 0; i < grandPrix[numGrandPrix - 1].nombreResultat; i++) {
+        // strcmp retourne 0 si les chaînes sont identiques sinon retourne > 0
+        if (strcmp(grandPrix[numGrandPrix - 1].resultat[i].tempsRealise, "0:00:00:000") == 0) {
+            printf("%-10s %-10s | Tps : %s (n'a pas couru)\n",
+               grandPrix[numGrandPrix - 1].resultat[i].prenomPilote,
+               grandPrix[numGrandPrix - 1].resultat[i].nomPilote,
+               grandPrix[numGrandPrix - 1].resultat[i].tempsRealise);
+        }
+        else {
+            printf("%-10s %-10s | Tps : %s\n",
+                   grandPrix[numGrandPrix - 1].resultat[i].prenomPilote,
+                   grandPrix[numGrandPrix - 1].resultat[i].nomPilote,
+                   grandPrix[numGrandPrix - 1].resultat[i].tempsRealise);
+        }
     }
 }

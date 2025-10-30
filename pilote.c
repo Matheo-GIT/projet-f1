@@ -38,15 +38,19 @@ void newPilote(const char* nom, const char* prenom, const char* nationalite,
 
 
     // ajout du pilotes dans les resultat des courses
-    strcpy(resultat[nb_pilotes].nomPilote, nom);
-    strcpy(resultat[nb_pilotes].prenomPilote, prenom);
-    strcpy(resultat[nb_pilotes].nationnalitePilote, nationalite);
-    resultat[nb_pilotes].position = 0;
-    strcpy(resultat[nb_pilotes].tempsRealise, "0:00:00:000");
-    resultat[nb_pilotes].pointsObtenus = 0;
-
-    grandPrix[nb_grandprix - 1].nombreResultat++; // ajoute 1 pilote donc le nombre de résultat augmente aussi
+    // 🔁 Ajouter le nouveau pilote dans TOUS les Grands Prix existants
+    for (int i = 0; i < nb_grandprix; i++) {
+        int idx = grandPrix[i].nombreResultat; // position à la fin
+        strcpy(grandPrix[i].resultat[idx].nomPilote, nom);
+        strcpy(grandPrix[i].resultat[idx].prenomPilote, prenom);
+        strcpy(grandPrix[i].resultat[idx].nationnalitePilote, nationalite);
+        strcpy(grandPrix[i].resultat[idx].tempsRealise, "0:00:00:000");
+        grandPrix[i].resultat[idx].position = 0;
+        grandPrix[i].resultat[idx].pointsObtenus = 0;
+        grandPrix[i].nombreResultat++;
+    }
     nb_pilotes++;
+    printf("Nouveau pilote ajoute : %s %s (%s)", nom, prenom, nationalite);
 }
 
 void updatePointsOfPilote(int index, int editPoints) {
@@ -92,7 +96,7 @@ void displayPilote(int index) {
 }
 
 
-// affiche tout les pilotes
+// affiche tous les pilotes
 void displayTousPilotes() {
     for (int i = 0; i < nb_pilotes; i++) {
         displayPilote(i);

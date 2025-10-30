@@ -16,12 +16,10 @@ int main() {
     //updateResultGranPrix(); <- gaver long sa mere a faire
     //car faut rentrer tout les temps a la main 1 par 1 + faut bien écrire avec les : (ex : 0:00:00:000)
     //displayTempsPilotes(2);
-    //displayTousGrandPrix();
+    displayTousGrandPrix();
     //deleteGrandPrix(1); // faut que sa delete aussi les résultats du grand prix
-    //displayTousGrandPrix();
-    //updateResultGranPrix();
-    //displayTempsPilotes(1);
-    menuNewGrandPrix();
+    // displayTousGrandPrix();
+    displayTempsPilotes(1);
 
     return 0;
 }

@@ -25,6 +25,7 @@ void newEcurie(const char* nom, const char* pays, int points, int anneCreation, 
     ecuries[nb_ecurie].Actif = actif;
 
     nb_ecurie++;
+    printf("Nouvelle ecurie ajoute : %s (%s)", nom, pays);
 }
 
 // Probleme regler c'était juste un : - 1
