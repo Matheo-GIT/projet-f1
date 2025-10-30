@@ -47,24 +47,22 @@ int nb_resultat = 1;
 void newGrandPrix(const char* nomCircuit, const char* pays, int nombreTours,
                   Date date, Heure horaire, int actif) {
 
-    GrandPrix* gp = &grandPrix[nb_grandprix]; // pointeur vers le GP en cours
-
-    strcpy(gp->nomCircuit, nomCircuit);
-    strcpy(gp->pays, pays);
-    gp->nombreTours = nombreTours;
-    gp->date = date;
-    gp->horaire = horaire;
-    gp->actif = actif;
-    gp->nombreResultat = nb_pilotes; // un résultat par pilote
+    strcpy(grandPrix[nb_grandprix].nomCircuit, nomCircuit);
+    strcpy(grandPrix[nb_grandprix].pays, pays);
+    grandPrix[nb_grandprix].nombreTours = nombreTours;
+    grandPrix[nb_grandprix].date = date;
+    grandPrix[nb_grandprix].horaire = horaire;
+    grandPrix[nb_grandprix].actif = actif;
+    grandPrix[nb_grandprix].nombreResultat = nb_pilotes; // un résultat par pilote
 
     // pour chaque pilote on créer un "résultat vierge" dans le GP
     for (int i = 0; i < nb_pilotes; i++) {
-        strcpy(gp->resultat[i].nomPilote, pilotes[i].nom);
-        strcpy(gp->resultat[i].prenomPilote, pilotes[i].prenom);
-        strcpy(gp->resultat[i].nationnalitePilote, pilotes[i].nationalite);
-        gp->resultat[i].position = 0;
-        strcpy(gp->resultat[i].tempsRealise, "0:00:00:000");
-        gp->resultat[i].pointsObtenus = 0;
+        strcpy(grandPrix[nb_grandprix].resultat[i].nomPilote, pilotes[i].nom);
+        strcpy(grandPrix[nb_grandprix].resultat[i].prenomPilote, pilotes[i].prenom);
+        strcpy(grandPrix[nb_grandprix].resultat[i].nationnalitePilote, pilotes[i].nationalite);
+        grandPrix[nb_grandprix].resultat[i].position = 0;
+        strcpy(grandPrix[nb_grandprix].resultat[i].tempsRealise, "0:00:00:000");
+        grandPrix[nb_grandprix].resultat[i].pointsObtenus = 0;
     }
 
     nb_grandprix++;
