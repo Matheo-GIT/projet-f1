@@ -2,6 +2,7 @@
 #include "pilote.h"
 #include "ecurie.h"
 #include "GrandPrix.h"
+#include "classement.h"
 
 
 void mainMenu() {
@@ -431,7 +432,43 @@ void menuNewGrandPrix() {
 
 }
 
-
+// =========================================== MENU CLASSEMENT =========================================
+void MenuClassement() {
+    int choix;
+    do {
+        printf("\n=== MENU Classement ===\n");
+        printf("1. Afficher le classement de la Course\n");
+        printf("2. Afficher le classement general des pilotes\n");
+        printf("3. Afficher le classement des Ecurie\n");
+        printf("4. Retour\n");
+        scanf("%d", &choix);
+        switch (choix) {
+            case 1:{
+                if (nb_grandprix == 0) {
+                    printf("Aucun Grand Prix disponible.\n");
+                } else {
+                    int index;
+                    printf("Entrez l'indice du Grand Prix (0 Ã %d) : ", nb_grandprix - 1);
+                    scanf("%d", &index);
+                    afficherClassementCourse(index);
+                }
+                break;
+                case 2:
+                    afficherClassementGeneralPilote();
+                    break;
+                case 3:
+                    afficherClassementEcurie();
+                    break;
+                case 4:
+                    printf("Retour au menu principal...\n");
+                    return; // return rien car fonction void et pas de break, le return quitte la boucle menuClassement et va dans mainMenu
+                default:
+                    printf("Choix invalide !\n");
+                    break;
+            }
+        }
+    }while (choix != 4);
+}
 
 
 

@@ -11,4 +11,6 @@ add_executable(TEST_GRAND_PRIX main.c
         menu.c
         menu.h
         GrandPrix.c
-        GrandPrix.h)
+        GrandPrix.h
+        classement.c
+        classement.h)
