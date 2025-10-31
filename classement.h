@@ -2,14 +2,15 @@
 #define GRAND_PRIX_CLASSEMENT_H
 #include "pilote.h"
 #include "GrandPrix.h"
+#include "ecurie.h"
 
 typedef struct {
-    char nomEcurie[50];
+    Ecurie nomEcurie; // structure imbrique pour connaitre le nom de l'écurie on fait  : *.nomEcurie.Nom
     int pointsTotal;
-}ClassementEcurie;
+} ClassementEcurie;
 
-void afficherClassementCourse(int indexGrandPrix);
-void afficherClassementGeneralPilote();
-void afficherClassementEcurie();
+void displayClassementCourse(int indexGrandPrix);
+void displayGeneralClassementPilote();
+void displayClassementEcurie();
 
 #endif //GRAND_PRIX_CLASSEMENT_H

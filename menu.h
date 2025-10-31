@@ -28,6 +28,11 @@ void menuNewGrandPrix();
 //void menuEditTimeGrandPrix();
 //void menuDisplayGrandPrix();
 
+
+
+// === MENU CLASSEMENT ===
+void menuClassement();
+
 // === AUTRE FONCTION ===
 int estBissextile(int annee);
 

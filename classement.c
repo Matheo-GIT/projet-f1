@@ -4,47 +4,57 @@
 #include "GrandPrix.h"
 #include "menu.h"
 
-void afficherClassementCourse(const int indexGrandPrix) {
+void displayClassementCourse(int indexGrandPrix) {
+    // dans le menu on appelera la fonction avec l'indice - 1 car en humain le GP 1 != GP 1 du tableau
+
     if (indexGrandPrix < 0 || indexGrandPrix >= nb_grandprix) {
-        printf("*** Indice de Grand Prix invalide. ***\n");
+        printf("=== Indice de Grand Prix invalide ===\n");
         return;
     }
 
-    GrandPrix gp = grandPrix[indexGrandPrix];
-    if (!gp.actif) {
-        printf("*** Ce Grand Prix est inactif. ***\n");
+    // si actif est different de 1 alors il est inactif
+    if (!grandPrix[indexGrandPrix].actif) {
+        printf("=== Ce Grand Prix est inactif ===\n");
         return;
     }
 
-    printf("\n=================== CLASSEMENT DU GRAND PRIX : %s | %s ===================\n",gp.nomCircuit, gp.pays);
-    printf("Date : %02d/%02d/%04d  -  Heure : %02dh%02dm\n",
-        gp.date.jour, gp.date.mois, gp.date.annee, //Date
-        gp.horaire.heures, gp.horaire.minutes);//Heure
+    printf("\n=================== CLASSEMENT DU GRAND PRIX : %s | %s ===================\n",grandPrix[indexGrandPrix].nomCircuit, grandPrix[indexGrandPrix].pays);
+    printf("Date : %02d/%02d/%04d | Heure : %02d:%02d\n",
+        grandPrix[indexGrandPrix].date.jour, grandPrix[indexGrandPrix].date.mois, grandPrix[indexGrandPrix].date.annee,
+        grandPrix[indexGrandPrix].horaire.heures, grandPrix[indexGrandPrix].horaire.minutes);
 
-    printf("\n| %-3s | %-15s | %-15s | %-15s | %-10s | %-10s |\n",
-           "Pos", "Nom", "Prénom", "Nationalité", "Temps", "Points");
+    // permet d'ajuster la taille entre les colonnes
+    printf("\n%-7s | %-12s | %-11s | %-15s | %-12s | %s\n",
+           "Pos", "Nom", "Prenom", "Nationalite", "Temps", "Points");
 
-    for (int i = 0; i < gp.nombreResultat; i++) {
-        ResultatCourse r = gp.resultat[i];
-        printf("%-3d %-s %-s %-s %-s %-10d\n",
-               r.position, r.nomPilote, r.prenomPilote,
-               r.nationnalitePilote, r.tempsRealise, r.pointsObtenus);
+
+    // il faut classer les pilotes suivants leur position
+    // donc on les met un tableau avec leur pos et on boucle sur la pos avec un indice + 1
+    for (int i = 0; i < grandPrix[indexGrandPrix].nombreResultat; i++) {
+
+
+        printf("Pos : %-3d %-14s %-13s %-17s %-14s %-10d\n",
+               grandPrix[indexGrandPrix].resultat[i].position,
+               grandPrix[indexGrandPrix].resultat[i].nomPilote,
+               grandPrix[indexGrandPrix].resultat[i].prenomPilote,
+               grandPrix[indexGrandPrix].resultat[i].nationnalitePilote,
+               grandPrix[indexGrandPrix].resultat[i].tempsRealise,
+               grandPrix[indexGrandPrix].resultat[i].pointsObtenus);
     }
-    printf("=============================================================================\n");
 }
 
 //Classement général des pilotes
-void afficherClassementGeneralPilotes() {
+void displayGeneralClassementPilote() {
     if (nb_pilotes == 0) {
-        printf("*** Aucun pilote enregistré. ***\n");
+        printf("=== Aucun pilote enregistre ===\n");
         return;
     }
 
-    // Copie locale pour trier
+    // on fait une copie locale pour trier
     Pilote classement[MAX_PILOTE];
     memcpy(classement, pilotes, sizeof(Pilote) * nb_pilotes);
 
-    // Tri par points décroissants (simple bubble sort)
+    // on tri par points décroissants grace a un bubble sort
     for (int i = 0; i < nb_pilotes - 1; i++) {
         for (int j = 0; j < nb_pilotes - i - 1; j++) {
             if (classement[j].points < classement[j + 1].points) {
@@ -55,22 +65,21 @@ void afficherClassementGeneralPilotes() {
         }
     }
 
-    printf("\n======================= CLASSEMENT GÉNÉRAL PILOTES ========================\n");
-    printf("%-3s %-s %-s %-s %-s\n",
-           "Pos", "Nom", "Prénom", "Écurie", "Points");
+    printf("\n======================= CLASSEMENT GENERAL PILOTES ========================\n");
+    printf("%-3s | %-12s | %-10s | %-17s | %s\n",
+           "Pos", "Nom", "Prenom", "Ecurie", "Points");
 
     for (int i = 0; i < nb_pilotes; i++) {
-        printf("%-3d %-s %-s %-s %-d\n",
+        printf("%-5d %-14s %-12s %-19s %d\n",
                i + 1, classement[i].nom, classement[i].prenom,
                classement[i].ecurie, classement[i].points);
     }
-    printf("=============================================================================\n");
 }
 
-//Classement des Ecuries
-void afficherClassementEcurie() {
+
+void displayClassementEcurie() {
     if (nb_pilotes == 0) {
-        printf("*** Aucun pilote enregistré. ***\n");
+        printf("=== Aucun pilote enregistre ===\n");
         return;
     }
 
@@ -81,14 +90,14 @@ void afficherClassementEcurie() {
     for (int i = 0; i < nb_pilotes; i++) {
         int trouve = 0;
         for (int j = 0; j < nbEcuries; j++) {
-            if (strcmp(pilotes[i].ecurie, ecuries[j].nomEcurie) == 0) {
+            if (strcmp(pilotes[i].ecurie, ecuries[j].nomEcurie.Nom) == 0) {
                 ecuries[j].pointsTotal += pilotes[i].points;
                 trouve = 1;
                 break;
             }
         }
         if (!trouve) {
-            strcpy(ecuries[nbEcuries].nomEcurie, pilotes[i].ecurie);
+            strcpy(ecuries[nbEcuries].nomEcurie.Nom, pilotes[i].ecurie);
             ecuries[nbEcuries].pointsTotal = pilotes[i].points;
             nbEcuries++;
         }
@@ -109,7 +118,7 @@ void afficherClassementEcurie() {
     printf("%-3s %-s %-s\n", "Pos", "Écurie", "Points");
 
     for (int i = 0; i < nbEcuries; i++) {
-        printf("%-3d %-s %-d\n", i + 1, ecuries[i].nomEcurie, ecuries[i].pointsTotal);
+        printf("%-3d %-s %-d\n", i + 1, ecuries[i].nomEcurie.Nom, ecuries[i].pointsTotal);
     }
     printf("=============================================================================\n");
 }

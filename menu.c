@@ -433,31 +433,33 @@ void menuNewGrandPrix() {
 }
 
 // =========================================== MENU CLASSEMENT =========================================
-void MenuClassement() {
+void menuClassement() {
     int choix;
     do {
-        printf("\n=== MENU Classement ===\n");
-        printf("1. Afficher le classement de la Course\n");
+        printf("\n=== MENU CLASSEMENT ===\n");
+        printf("1. Afficher le classement de la course\n");
         printf("2. Afficher le classement general des pilotes\n");
-        printf("3. Afficher le classement des Ecurie\n");
+        printf("3. Afficher le classement des ecurie\n");
         printf("4. Retour\n");
-        scanf("%d", &choix);
+        scanf(" %d", &choix);
+
         switch (choix) {
-            case 1:{
+            case 1:
                 if (nb_grandprix == 0) {
-                    printf("Aucun Grand Prix disponible.\n");
-                } else {
+                    printf("Aucun Grand Prix disponible\n");
+                }
+                else {
                     int index;
-                    printf("Entrez l'indice du Grand Prix (0 Ã %d) : ", nb_grandprix - 1);
-                    scanf("%d", &index);
-                    afficherClassementCourse(index);
+                    printf("Entrez l'indice du Grand Prix (0 a %d) : ", nb_grandprix - 1);
+                    scanf(" %d", &index);
+                    displayClassementCourse(index);
                 }
                 break;
                 case 2:
-                    afficherClassementGeneralPilote();
+                    displayGeneralClassementPilote();
                     break;
                 case 3:
-                    afficherClassementEcurie();
+                    displayClassementEcurie();
                     break;
                 case 4:
                     printf("Retour au menu principal...\n");
@@ -465,7 +467,6 @@ void MenuClassement() {
                 default:
                     printf("Choix invalide !\n");
                     break;
-            }
         }
     }while (choix != 4);
 }

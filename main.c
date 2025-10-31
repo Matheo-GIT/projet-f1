@@ -2,6 +2,7 @@
 #include "menu.h"
 #include "ecurie.h"
 #include "GrandPrix.h"
+#include "classement.h"
 // CLASSEMENT EN PRIO A PRESENTER
 int main() {
     // NE PAS SUPP
@@ -20,6 +21,8 @@ int main() {
     //deleteGrandPrix(1); // faut que sa delete aussi les résultats du grand prix
     // displayTousGrandPrix();
     displayTempsPilotes(1);
-
+    printf("\n\n\n\n\n\n");
+    displayClassementCourse(1);
+    displayGeneralClassementPilote();
     return 0;
 }
