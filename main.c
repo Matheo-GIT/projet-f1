@@ -24,5 +24,6 @@ int main() {
     printf("\n\n\n\n\n\n");
     displayClassementCourse(1);
     displayGeneralClassementPilote();
+    displayClassementEcurie();
     return 0;
 }

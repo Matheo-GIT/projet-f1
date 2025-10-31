@@ -50,11 +50,13 @@ void displayGeneralClassementPilote() {
         return;
     }
 
-    // on fait une copie locale pour trier
+    // Copie locale pour trier
     Pilote classement[MAX_PILOTE];
     memcpy(classement, pilotes, sizeof(Pilote) * nb_pilotes);
 
-    // on tri par points décroissants grace a un bubble sort
+    // on tri par points décroissants grace a un trie a bulle
+    // on parcourt le tableau plusieurs fois et a chaque passage on echange les pilotes
+    // si celui d’après a plus de points que celui d’avant
     for (int i = 0; i < nb_pilotes - 1; i++) {
         for (int j = 0; j < nb_pilotes - i - 1; j++) {
             if (classement[j].points < classement[j + 1].points) {
@@ -69,6 +71,7 @@ void displayGeneralClassementPilote() {
     printf("%-3s | %-12s | %-10s | %-17s | %s\n",
            "Pos", "Nom", "Prenom", "Ecurie", "Points");
 
+    // affichage des pilotes trier
     for (int i = 0; i < nb_pilotes; i++) {
         printf("%-5d %-14s %-12s %-19s %d\n",
                i + 1, classement[i].nom, classement[i].prenom,
@@ -115,10 +118,9 @@ void displayClassementEcurie() {
     }
 
     printf("\n========================= CLASSEMENT DES ECURIES =========================\n");
-    printf("%-3s %-s %-s\n", "Pos", "Écurie", "Points");
+    printf("%-3s %-s %-s\n", "Pos", "Ecurie", "Points");
 
     for (int i = 0; i < nbEcuries; i++) {
         printf("%-3d %-s %-d\n", i + 1, ecuries[i].nomEcurie.Nom, ecuries[i].pointsTotal);
     }
-    printf("=============================================================================\n");
 }
