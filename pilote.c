@@ -1,6 +1,7 @@
 #include <string.h>
 #include "pilote.h"
 #include "GrandPrix.h"
+#include "ecurie.h"
 #include "menu.h"
 
 #include <stdlib.h>
@@ -37,8 +38,8 @@ void newPilote(const char* nom, const char* prenom, const char* nationalite,
     pilotes[nb_pilotes].actif = actif;
 
 
-    // ajout du pilotes dans les resultat des courses
-    // 🔁 Ajouter le nouveau pilote dans TOUS les Grands Prix existants
+    // ajout du pilote dans les resultat des courses
+    // ajouter le nouveau pilote dans tous les gp existants
     for (int i = 0; i < nb_grandprix; i++) {
         int idx = grandPrix[i].nombreResultat; // position à la fin
         strcpy(grandPrix[i].resultat[idx].nomPilote, nom);
@@ -50,11 +51,35 @@ void newPilote(const char* nom, const char* prenom, const char* nationalite,
         grandPrix[i].nombreResultat++;
     }
     nb_pilotes++;
-    printf("Nouveau pilote ajoute : %s %s (%s)", nom, prenom, nationalite);
+    printf("Nouveau pilote ajoute : %s %s (%s)\n", nom, prenom, nationalite);
 }
 
-void updatePointsOfPilote(int index, int editPoints) {
-    pilotes[index].points = editPoints;
+void updatePointsOfPilote(int pilote, int editPoints) {
+    // cette fonction modifie les points d'un pilote
+    // puis elle additionne les points des 2 pilotes avec la meme écurie pour les additionner
+    // et former les nouveaux points totaux de l'écurie
+
+    pilotes[pilote].points = editPoints;
+    char* nomEcurie = pilotes[pilote].ecurie;
+    int pointTotal = 0;
+
+    for (int i = 0; i < nb_pilotes; i++) {
+        if (strcmp(pilotes[i].ecurie, nomEcurie) == 0
+) {
+            pointTotal += pilotes[i].points;
+        }
+    }
+
+    for (int i = 0; i < nb_ecurie; i++) {
+        if (strcmp(nomEcurie, ecuries[i].Nom) == 0) {
+            ecuries[i].Points = pointTotal;
+        }
+    }
+
+    printf("Nombre de points du pilote %s %s modifier\n",
+        pilotes[pilote].nom, pilotes[pilote].prenom);
+    printf("Les points de l'ecurie %s sont maintenant de %d\n",
+        nomEcurie, pointTotal);
 }
 
 void deletePilote(int index) {
@@ -72,16 +97,7 @@ void deletePilote(int index) {
     printf("Pilote supprime avec succes.\n");
 }
 
-int piloteExiste(const char* nom, const char* prenom) {
-    for (int i = 0; i < nb_pilotes; i++) {
-        if (strcmp(pilotes[i].nom, nom) == 0 && strcmp(pilotes[i].prenom, prenom) == 0) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-// affiche 1 pilote
+// ===== Affiche 1 pilote =====
 void displayPilote(int index) {
     printf("Nom : %-12s | Prenom : %-8s | Nationalite : %-11s | Ecurie : %-16s | Points : %3d | Numero : %3d | Age : %3d | Actif : %d\n",
            pilotes[index].nom,
@@ -95,10 +111,32 @@ void displayPilote(int index) {
     printf("\n");
 }
 
-
-// affiche tous les pilotes
+// ===== Affiche tous les pilotes =====
 void displayTousPilotes() {
     for (int i = 0; i < nb_pilotes; i++) {
         displayPilote(i);
     }
+}
+
+// ===== Autre fonction qui serve pour les inputs =====
+int piloteExiste(const char* nom, const char* prenom) {
+    for (int i = 0; i < nb_pilotes; i++) {
+        if (strcmp(pilotes[i].nom, nom) == 0 && strcmp(pilotes[i].prenom, prenom) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int numberPiloteAlreadyUse(int numeroPilote) {
+    // cette fonction sert à vérifier si le numéro du pilote
+    // donné lors de l'ajout d'un pilote est déjà utiliser
+    // elle retourne 1 si le numero n'est pas pris et 0 si il est pris
+
+    for (int i = 0; i < nb_pilotes; i++) {
+        if (numeroPilote == pilotes[i].numero) {
+            return 0;
+        }
+    }
+    return 1;
 }

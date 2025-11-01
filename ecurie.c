@@ -5,7 +5,7 @@
 
 Ecurie ecuries[MAX_ECURIE] = {
     {"Red Bull Racing", "Autriche", 0, 2005, "Christian Horner", 1},
-    {"Scuderia Ferrari", "Italie", 0, 1950, "Frédéric Vasseur", 1},
+    {"Scuderia Ferrari", "Italie", 0, 1950, "Frederic Vasseur", 1},
     {"Mercedes-AMG", "Allemagne", 0, 2010, "Toto Wolff", 1},
     {"McLaren Racing", "Royaume-Uni", 0, 1966, "Andrea Stella", 1},
     {"Aston Martin", "Royaume-Uni", 0, 2021, "Mike Krack", 1}
@@ -22,10 +22,11 @@ void newEcurie(const char* nom, const char* pays, int points, int anneCreation, 
     strcpy(ecuries[nb_ecurie].Directeur, directeur);
 
     ecuries[nb_ecurie].Points = points;
+    ecuries[nb_ecurie].anneeCreation = anneCreation;
     ecuries[nb_ecurie].Actif = actif;
 
     nb_ecurie++;
-    printf("Nouvelle ecurie ajoute : %s (%s)", nom, pays);
+    printf("Nouvelle ecurie ajoute : %s (%s)\n", nom, pays);
 }
 
 // Probleme regler c'était juste un : - 1
@@ -67,9 +68,14 @@ void displayTousEcurie() {
 
 void updatePointsOfEcurie(int index, int modifPoints) {
     ecuries[index].Points = modifPoints;
+    printf("Le nombre de point de l'ecurie %s (%s) a ete modifier",
+        ecuries[index].Nom, ecuries[index].Pays);
 }
 
 int ecurieExiste(char ecurie[50]) {
+    if (nb_ecurie == 0) {
+        return 1;
+    }
     for (int i = 0; i < nb_ecurie; i++) {
         if (strcmp(ecuries[i].Nom, ecurie) == 0) {
             return 1;

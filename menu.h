@@ -1,7 +1,5 @@
 #ifndef TEST_GRAND_PRIX_MENU_H
 #define TEST_GRAND_PRIX_MENU_H
-#include "pilote.h"
-#include "GrandPrix.h"
 
 void mainMenu();
 
@@ -23,10 +21,13 @@ void menuDisplayEcurie();
 
 
 // === MENU GRAND PRIX ===
+void menuGrandPrix();
 void menuNewGrandPrix();
 //void menuDeleteGrandPrix();
 //void menuEditTimeGrandPrix();
-//void menuDisplayGrandPrix();
+void menuDisplayTempsGrandPrix();
+void menuDisplayGrandPrix();
+void menuDisplayPointsPilotes();
 
 
 

@@ -3,8 +3,8 @@
 
 #include "pilote.h"
 
-#define MAX_GRANDPRIX 3
-#define MAX_RESULTATS 20
+#define MAX_GRANDPRIX 5
+#define MAX_RESULTATS MAX_PILOTE
 
 typedef struct {
     int jour;
@@ -50,5 +50,6 @@ void displayGrandPrix(int indexGrandPrix);
 void displayTousGrandPrix();
 void deleteGrandPrix(int indexGranPrix);
 void displayTempsPilotes(int numGrandPrix);
+void displayPointsPilotes(int numGrandPrix);
 
 #endif // GRAND_PRIX_GRANDPRIX_H

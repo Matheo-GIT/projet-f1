@@ -11,7 +11,9 @@ void mainMenu() {
         printf("\n=== MENU PRINCIPAL ===\n");
         printf("1. Menu pilote\n");
         printf("2. Menu ecurie\n");
-        printf("3. Quitter\n");
+        printf("3. Menu Grand Prix\n");
+        printf("4. Quitter\n");
+        printf("Votre choix :");
         scanf(" %d", &choix);
 
         switch (choix) {
@@ -22,12 +24,15 @@ void mainMenu() {
                 menuEcurie();
                 break;
             case 3:
-                printf("Au revoir !");
+                menuGrandPrix();
                 break;
+            case 4:
+                printf("Au revoir !");
+                return;
             default:
                 printf("Choix invalide !");
         }
-    } while (choix != 3);
+    } while (choix != 4);
 }
 
 
@@ -86,8 +91,7 @@ void menuNewPilote() {
     printf("\n=== MENU D'AJOUT DE PILOTE ===\n");
     // saisie nom/prenom avec vérifications
     do {
-        printf("Quel est le nom du pilote : \n");
-        printf("Quitter (q) : ");
+        printf("Quel est le nom du pilote : ");
         scanf("%49s", nom);
 
         printf("Quel est le prenom du pilote : ");
@@ -100,7 +104,7 @@ void menuNewPilote() {
             printf("Erreur : ce pilote existe déjà.\n");
         }
 
-
+    // vérification des imputs de l'utilisateur
     } while (strlen(nom) == 0 || strlen(prenom) == 0 || piloteExiste(nom, prenom) != -1);
 
 
@@ -108,13 +112,23 @@ void menuNewPilote() {
     printf("Quel est la nationalite du pilote : ");
     scanf("%s", nationalite);
 
-    // creer fonction ecurieExiste dans ecurie.c
-    printf("Quel est le nom de l'ecurie du pilote : ");
-    scanf(" %[^\n]", ecurie); // l'espace avant : % -> clear le buffer et tant qu'on ne retourne pas a la ligne
-                                    // alors on scan se que dit l'utilisateur
+    do {
+        printf("Tous les nom d'ecurie :\n");
+        for (int i = 0; i < nb_ecurie; i++) {
+            printf(" %s |", ecuries[i].Nom);
+        }
+        printf("\n");
+        printf("Quel est le nom de l'ecurie du pilote : ");
+        scanf(" %[^\n]", ecurie); // l'espace avant : % -> clear le buffer et tant qu'on ne retourne pas a la ligne
+                                        // alors on scan se que dit l'utilisateur
+        if (ecurieExiste(ecurie) != 1) {
+            printf("Erreur : cette ecurie n'existe pas\n");
+        }
+    } while (ecurieExiste(ecurie) != 1);
+
     do {
         printf("Quel est le nombre de point du pilote : ");
-        scanf("%d", &points);
+        scanf(" %d", &points);
         if (points < 0) {
             printf("Erreur : le nombre de point doit etre positif\n");
         }
@@ -127,7 +141,10 @@ void menuNewPilote() {
         if (numero <= 0 || numero >= 100) {
             printf("Erreur : le numero doit etre compris entre 1 et 99\n");
         }
-    } while (numero <= 0 || numero >= 100);
+        else if (numberPiloteAlreadyUse(numero) == 0) {
+            printf("Erreur : le numero est deja pris\n");
+        }
+    } while (numero <= 0 || numero >= 100 || numberPiloteAlreadyUse(numero) == 0);
 
 
     do {
@@ -151,7 +168,6 @@ void menuNewPilote() {
 
 
     newPilote(nom, prenom, nationalite, ecurie, points, numero, age, actif);
-    printf("\nCreation reussi");
 }
 
 
@@ -168,7 +184,7 @@ void menuDeletePilote() {
 void menuEditPointsPilote() {
     int option, editPoint;
     for (int i = 0; i < nb_pilotes; i++) {
-        printf("%d. %s %s | %d\n", i+1, pilotes[i].nom, pilotes[i].prenom, pilotes[i].points);
+        printf("%-3d %-11s %-9s | %d\n", i+1, pilotes[i].nom, pilotes[i].prenom, pilotes[i].points);
     }
     printf("A quel pilote voulez vous modifier les points : ");
     scanf("%d", &option);
@@ -185,16 +201,16 @@ void menuEditPointsPilote() {
 
 void menuDisplayPilote() {
     int choix;
-    for (int i = 0; i < nb_pilotes - 1; i++) {
+    for (int i = 0; i < nb_pilotes; i++) {
         printf("%d. %s %s\n", i+1, pilotes[i].nom, pilotes[i].prenom);
     }
     do {
         printf("Quel pilote voulez vous afficher : ");
         scanf("%d", &choix);
-        if (choix <= 0 || choix >= nb_pilotes) {
+        if (choix <= 0 || choix > nb_pilotes) {
             printf("Erreur : vous avez choisis un pilote en dehors de la liste\n");
         }
-    } while (choix <= 0 || choix >= nb_pilotes);
+    } while (choix <= 0 || choix > nb_pilotes);
 
     displayPilote(choix - 1);
 }
@@ -212,6 +228,7 @@ void menuEcurie() {
         printf("4. Afficher une ecurie\n");
         printf("5. Afficher toutes les ecuries\n");
         printf("6. Retour\n");
+        printf("Votre choix : ");
         scanf("%d", &choix);
         switch (choix) {
             case 1:
@@ -227,7 +244,7 @@ void menuEcurie() {
                 menuDisplayEcurie();
                 break;
             case 5:
-                displayTousEcurie();;
+                displayTousEcurie();
                 break;
             case 6:
                 printf("Retour au menu principal...\n");
@@ -250,11 +267,24 @@ void menuNewEcurie() {
     }
     printf("\n=== MENU D'AJOUT D'ECURIE ===\n");
     do {
-        printf("Entrez le nom de l'ecurie : ");
-        scanf(" %[^\n]", nom);
-        if (ecurieExiste(nom) != 1) {
-            printf("Cette ecurie n'existe pas\n");
+        if (nb_ecurie > 0) {
+            printf("Tous les nom d'ecurie :\n");
+            for (int i = 0; i < nb_ecurie; i++) {
+                printf(" %s |", ecuries[i].Nom);
+            }
+            printf("\n");
+            printf("Entrez le nom de l'ecurie : ");
+            scanf(" %[^\n]", nom);
+            if (ecurieExiste(nom) != 1) {
+                printf("Cette ecurie n'existe pas\n");
+            }
         }
+        else {
+            printf("Entrez le nom de l'ecurie : ");
+            scanf(" %[^\n]", nom);
+        }
+
+
     } while (ecurieExiste(nom) != 1);
 
     printf("Entrez le pays :");
@@ -265,7 +295,7 @@ void menuNewEcurie() {
 
     do {
         printf("Entrez le nombre de points : ");
-        scanf("%d", &points);
+        scanf(" %d", &points);
         if (points < 0) {
             printf("Erreur : le nombre de points ne peux pas etre negatif\n");
         }
@@ -287,10 +317,13 @@ void menuNewEcurie() {
         }
     } while (actif != 1 && actif != 0);
     newEcurie(nom, pays, points, anneeCreation, directeur, actif);
-    printf("Ecurie creer avec succes\n");
 }
 
 void menuDeleteEcurie() {
+    if (nb_ecurie == 0) {
+        printf("Erreur : il n'y a pas d'ecurie\n");
+        return;
+    }
     int option;
     for (int i = 0; i < nb_ecurie; i++) {
         printf("%d. %s\n", i+1, ecuries[i].Nom);
@@ -307,7 +340,7 @@ void menuDisplayEcurie() {
     }
     do {
         printf("Quel ecurie voulez vous afficher : ");
-        scanf("%d", &choix);
+        scanf(" %d", &choix);
         if (choix <= 0 || choix > nb_ecurie) {
             printf("Erreur : choix invalide\n");
         }
@@ -350,40 +383,48 @@ void menuEditPointsEcurie() {
 
 void menuGrandPrix() {
     int choix;
-    printf("1. Ajouter un Grand Prix\n");
-    printf("2. Supprimer un Grand Prix\n");
-    printf("3. Modifier les temps d'un Grand Prix\n");
-    printf("4. Afficher un Grand Prix\n");
-    printf("5. Afficher tous les Grand Prix\n");
-    printf("6. Retour\n");
-
     do {
+        printf("\n=== MENU GRAND PRIX ===\n");
+        printf("1. Ajouter un Grand Prix\n");
+        printf("2. Supprimer un Grand Prix\n");
+        printf("3. Modifier les temps d'un Grand Prix\n");
+        printf("4. Afficher les temps d'un Grand Prix\n");
+        printf("5. Afficher un Grand Prix\n");
+        printf("6. Afficher tous les Grand Prix\n");
+        printf("7. Afficher les points des pilotes d'un Grand Prix\n");
+        printf("8. Retour\n");
         printf("Votre choix : ");
         scanf(" %d", &choix);
         switch (choix) {
             case 1:
-                //menuNewGrandPrix();
+                menuNewGrandPrix();
                 break;
             case 2:
                 //menuDeleteGrandPrix();
                 break;
             case 3:
-                //menuEditTimeGrandPrix();
+                updateResultGranPrix();
                 break;
             case 4:
-                // menuDisplayGrandPrix();
+                menuDisplayTempsGrandPrix();
                 break;
             case 5:
-                displayTousGrandPrix();
+                menuDisplayGrandPrix();
                 break;
             case 6:
+                displayTousGrandPrix();
+                break;
+            case 7:
+                menuDisplayPointsPilotes();
+                break;
+            case 8:
                 printf("Retour au menu principal...\n");
                 return;
             default:
                 printf("Choix invalide !\n");
                 break;
         }
-    } while (choix != 5);
+    } while (choix != 8);
 }
 
 void menuNewGrandPrix() {
@@ -409,9 +450,9 @@ void menuNewGrandPrix() {
     } while (nombreTours < 10 || nombreTours > 100);
 
     do {
-        printf("Entrez le mois du Grand Prix : \n");
         printf("1. Janvier | 2. Fevrier | 3. Mars | 4. Avril | 5. Mai | 6. Juin\n"
                "7. Juillet | 8. Aout | 9. Septembre | 10. Octobre | 11. Novembre | 12. Decembre\n");
+        printf("Entrez le mois du Grand Prix : ");
         scanf(" %d", &mois);
         if (mois < 1 || mois > 12) {
             printf("Erreur : Vous avez entrez un mois invalide\n");
@@ -429,8 +470,114 @@ void menuNewGrandPrix() {
         }
     } while (jour < 1 || jour > joursParMois[mois - 1]);
 
+    do {
+        printf("Entrez l'annee du Grand Prix (l'annee doit etre bissextile) : ");
+        scanf(" %d", &annee);
+        // si la fonction renvoie 0 -> erreur
+        if (annee < 1900 || annee > 2100) {
+            printf("Erreur : l'annee doit etre comprise entre 1900 et 2100\n");
+        }
+        else if (!estBissextile(annee)) {
+            printf("Erreur : l'annee saisie n'est pas bissextile\n");
+        }
+    } while (!estBissextile(annee) || annee < 1900 || annee > 2100);
+
+    do {
+        printf("Entrez l'heure du Grand Prix : ");
+        scanf(" %d", &heure);
+        if (heure < 1 || heure > 23) {
+            printf("Erreur : l'heure doit etre comprise entre 1 et 23\n");
+        }
+    } while (heure < 1 || heure > 23);
+
+    do {
+        printf("Entrez les minutes du Grand Prix : ");
+        scanf(" %d", &minute);
+        if (minute < 1 || minute > 59) {
+            printf("Erreur : les minutes doivent etre comprises entre 1 et 59\n");
+        }
+    } while (minute < 1 || minute > 59);
+
+    do {
+        printf("Est ce que le Grand Prix est acitf (1. Oui | 0. Non) : ");
+        scanf(" %d", &actif);
+        if (actif != 1 && actif != 0) {
+            printf("Erreur : veuillez entrer 1 (Actif) ou 0 (Non actif)\n");
+        }
+    } while (actif != 1 && actif != 0);
+
+    newGrandPrix(nomCircuit, pays, nombreTours,
+        (Date){jour, mois, annee}, (Heure){heure, minute}, actif);
 
 }
+
+void menuDisplayTempsGrandPrix() {
+    int choix;
+    if (nb_grandprix == 0) {
+        printf("Erreur : il n'y a pas de grand prix");
+        return;
+    }
+    do {
+        printf("De quel Grand Prix voulez vous affichez les temps : \n");
+        for (int i = 0; i < nb_grandprix; i++) {
+            printf("%d. %-22s | %s\n", i + 1, grandPrix[i].nomCircuit, grandPrix[i].pays);
+        }
+        printf("Votre choix : ");
+        scanf(" %d", &choix);
+        if (choix < 0 || choix > nb_grandprix) {
+            printf("Erreur : choix invalide\n");
+        }
+    } while (choix < 0 || choix > nb_grandprix);
+    displayTempsPilotes(choix - 1);
+}
+
+void menuDisplayGrandPrix() {
+    int choix;
+    if (nb_grandprix == 0) {
+        printf("Erreur : il n'y a pas de grand prix");
+        return;
+    }
+    printf("Voici une liste de tous les grand prix qui existe : \n");
+    for (int i = 0; i < nb_grandprix; i++) {
+        printf("%d %-23s | %s\n", i + 1, grandPrix[i].nomCircuit, grandPrix[i].pays);
+    }
+    do {
+        printf("Votre choix : ");
+        scanf(" %d", &choix);
+        if (choix <= 0 || choix > nb_grandprix) {
+            printf("Erreur : choix invalide\n");
+        }
+    } while (choix <= 0 || choix > nb_grandprix);
+    displayGrandPrix(choix - 1);
+}
+
+void menuDisplayPointsPilotes() {
+    int choix;
+    do {
+        printf("Liste des Grand Prix : \n");
+        for (int i = 0; i < nb_grandprix; i++) {
+            printf("%d. %-22s | %s\n", i + 1, grandPrix[i].nomCircuit, grandPrix[i].pays);
+        }
+        printf("Votre choix : ");
+        scanf(" %d", &choix);
+        if (choix < 0 || choix > nb_grandprix) {
+            printf("Erreur : choix invalide\n");
+        }
+    } while (choix < 1 || choix > nb_grandprix);
+    displayPointsPilotes(choix - 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 // =========================================== MENU CLASSEMENT =========================================
 void menuClassement() {
@@ -475,13 +622,17 @@ void menuClassement() {
 
 
 
-
+// ===== Autre fonction de gestion de l'input =====
 int estBissextile(int annee) {
+    // cette fonction calcule une annee pour savoir si elle est bissextile
+    // elle renvoie 1 si elle est bissextile et 0 sinon
+
     // Une année est bissextile si :
     // - elle est divisible par 4
     // - mais pas par 100, sauf si elle est aussi divisible par 400
+
     if ((annee % 4 == 0 && annee % 100 != 0) || (annee % 400 == 0)) {
-        return 1; // bissextile
+        return 1;
     }
     return 0;
 }
