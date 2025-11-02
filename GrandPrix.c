@@ -262,13 +262,11 @@ void displayPointsPilotes(int numGrandPrix) {
     // il faut que je boucle sur le nombre de pilote et que suivant leur position j'affiche
     // le bon nombre de point
 
+    printf("%-8s | %-10s | %s\n", "Prenom", "Nom", "Points");
     for (int i = 0; i < nb_pilotes; i++) {
-        printf("%-10s %-10s | Points : %d\n",
+        printf("%-10s %-10s | %d\n",
             grandPrix[numGrandPrix].resultat[i].prenomPilote,
             grandPrix[numGrandPrix].resultat[i].nomPilote,
             grandPrix[numGrandPrix].resultat[i].pointsObtenus);
     }
-
-
-
 }

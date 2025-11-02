@@ -12,7 +12,8 @@ void mainMenu() {
         printf("1. Menu pilote\n");
         printf("2. Menu ecurie\n");
         printf("3. Menu Grand Prix\n");
-        printf("4. Quitter\n");
+        printf("4. Menu Classement\n");
+        printf("5. Quitter\n");
         printf("Votre choix :");
         scanf(" %d", &choix);
 
@@ -27,12 +28,15 @@ void mainMenu() {
                 menuGrandPrix();
                 break;
             case 4:
+                menuClassement();
+                break;
+            case 5:
                 printf("Au revoir !");
                 return;
             default:
                 printf("Choix invalide !");
         }
-    } while (choix != 4);
+    } while (choix != 5);
 }
 
 
@@ -606,32 +610,25 @@ void menuClassement() {
         printf("2. Afficher le classement general des pilotes\n");
         printf("3. Afficher le classement des ecurie\n");
         printf("4. Retour\n");
+        printf("Votre choix : ");
         scanf(" %d", &choix);
 
         switch (choix) {
             case 1:
-                if (nb_grandprix == 0) {
-                    printf("Aucun Grand Prix disponible\n");
-                }
-                else {
-                    int index;
-                    printf("Entrez l'indice du Grand Prix (0 a %d) : ", nb_grandprix - 1);
-                    scanf(" %d", &index);
-                    displayClassementCourse(index);
-                }
+                menuDisplayClassementCourse();
                 break;
-                case 2:
-                    displayGeneralClassementPilote();
-                    break;
-                case 3:
-                    displayClassementEcurie();
-                    break;
-                case 4:
-                    printf("Retour au menu principal...\n");
-                    return; // return rien car fonction void et pas de break, le return quitte la boucle menuClassement et va dans mainMenu
-                default:
-                    printf("Choix invalide !\n");
-                    break;
+            case 2:
+                displayGeneralClassementPilote();
+                break;
+            case 3:
+                displayClassementEcurie();
+                break;
+            case 4:
+                printf("Retour au menu principal...\n");
+                return; // return rien car fonction void et pas de break, le return quitte la boucle menuClassement et va dans mainMenu
+            default:
+                printf("Choix invalide !\n");
+                break;
         }
     }while (choix != 4);
 }

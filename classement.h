@@ -13,4 +13,6 @@ void displayClassementCourse(int indexGrandPrix);
 void displayGeneralClassementPilote();
 void displayClassementEcurie();
 
+
+int pointsF1(int position);
 #endif //GRAND_PRIX_CLASSEMENT_H
