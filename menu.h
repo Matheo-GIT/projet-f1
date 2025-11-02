@@ -23,8 +23,8 @@ void menuDisplayEcurie();
 // === MENU GRAND PRIX ===
 void menuGrandPrix();
 void menuNewGrandPrix();
-//void menuDeleteGrandPrix();
-//void menuEditTimeGrandPrix();
+void menuDeleteGrandPrix();
+void menuEditTimeGrandPrix();
 void menuDisplayTempsGrandPrix();
 void menuDisplayGrandPrix();
 void menuDisplayPointsPilotes();
@@ -33,6 +33,7 @@ void menuDisplayPointsPilotes();
 
 // === MENU CLASSEMENT ===
 void menuClassement();
+void menuDisplayClassementCourse();
 
 // === AUTRE FONCTION ===
 int estBissextile(int annee);

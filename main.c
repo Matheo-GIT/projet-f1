@@ -20,8 +20,7 @@ int main() {
     //displayTousGrandPrix();
     //deleteGrandPrix(1); // faut que sa delete aussi les résultats du grand prix
     //displayTousGrandPrix();
-    mainMenu();
-    //menuDisplayGrandPrix();
-    //menuDisplayPilote();
+    //mainMenu();
+    displayClassementCourse(2);
     return 0;
 }

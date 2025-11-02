@@ -216,7 +216,7 @@ void menuDisplayPilote() {
 }
 
 
-// ============================================= MENU PILOTE =============================================
+// ============================================= MENU ECURIE =============================================
 
 void menuEcurie() {
     int choix;
@@ -400,7 +400,7 @@ void menuGrandPrix() {
                 menuNewGrandPrix();
                 break;
             case 2:
-                //menuDeleteGrandPrix();
+                menuDeleteGrandPrix();
                 break;
             case 3:
                 updateResultGranPrix();
@@ -432,7 +432,6 @@ void menuNewGrandPrix() {
     int nombreTours;
     int jour, mois, annee;
     int heure, minute;
-    // créer un résultat par GP
     int actif;
 
     printf("Entrez le nom du circuit : ");
@@ -512,11 +511,12 @@ void menuNewGrandPrix() {
 }
 
 void menuDisplayTempsGrandPrix() {
-    int choix;
     if (nb_grandprix == 0) {
-        printf("Erreur : il n'y a pas de grand prix");
+        printf("Erreur : aucun Grand Prix n'est enregistre\n");
         return;
     }
+
+    int choix;
     do {
         printf("De quel Grand Prix voulez vous affichez les temps : \n");
         for (int i = 0; i < nb_grandprix; i++) {
@@ -532,11 +532,12 @@ void menuDisplayTempsGrandPrix() {
 }
 
 void menuDisplayGrandPrix() {
-    int choix;
     if (nb_grandprix == 0) {
-        printf("Erreur : il n'y a pas de grand prix");
+        printf("Erreur : aucun Grand Prix n'est enregistre\n");
         return;
     }
+
+    int choix;
     printf("Voici une liste de tous les grand prix qui existe : \n");
     for (int i = 0; i < nb_grandprix; i++) {
         printf("%d %-23s | %s\n", i + 1, grandPrix[i].nomCircuit, grandPrix[i].pays);
@@ -552,6 +553,11 @@ void menuDisplayGrandPrix() {
 }
 
 void menuDisplayPointsPilotes() {
+    if (nb_grandprix == 0) {
+        printf("Erreur : aucun Grand Prix n'est enregistre\n");
+        return;
+    }
+
     int choix;
     do {
         printf("Liste des Grand Prix : \n");
@@ -568,14 +574,26 @@ void menuDisplayPointsPilotes() {
 }
 
 
+void menuDeleteGrandPrix() {
+    if (nb_grandprix == 0) {
+        printf("Erreur : aucun Grand Prix n'est enregistre\n");
+        return;
+    }
 
-
-
-
-
-
-
-
+    int choix;
+    do {
+        printf("\n=== MENU SUPPRESSION DE GRAND PRIX ===\n");
+        for (int i = 0; i < nb_grandprix; i++) {
+            printf("%d. %s (%s)\n", i + 1, grandPrix[i].nomCircuit, grandPrix[i].pays);
+        }
+        printf("Quel grand Prix voulez vous supprimer : ");
+        scanf(" %d", &choix);
+        if (choix < 0 || choix > nb_grandprix) {
+            printf("Erreur : choix invalide\n");
+        }
+    } while (choix < 0 || choix > nb_grandprix);
+    deleteGrandPrix(choix - 1);
+}
 
 
 
@@ -617,6 +635,28 @@ void menuClassement() {
         }
     }while (choix != 4);
 }
+
+void menuDisplayClassementCourse() {
+    if (nb_grandprix == 0) {
+        printf("Erreur : aucun Grand Prix n'est enregistre\n");
+        return;
+    }
+
+    int choix;
+    do {
+        for (int i = 0; i < nb_grandprix; i++) {
+            printf("%d. %s (%s)\n", i + 1, grandPrix[i].nomCircuit, grandPrix[i].pays);
+        }
+        printf("Entrez l'indice du Grand Prix : ");
+        scanf(" %d", &choix);
+        if (choix < 0 || choix > nb_grandprix) {
+            printf("Erreur : choix invalide\n");
+        }
+
+    } while (choix < 0 || choix > nb_grandprix);
+    displayClassementCourse(choix - 1);
+}
+
 
 
 

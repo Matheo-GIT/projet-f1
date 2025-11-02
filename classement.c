@@ -2,15 +2,12 @@
 #include "pilote.h"
 #include "classement.h"
 #include "GrandPrix.h"
-#include "menu.h"
 
 void displayClassementCourse(int indexGrandPrix) {
-    // dans le menu on appelera la fonction avec l'indice - 1 car en humain le GP 1 != GP 1 du tableau
+    // cette fonction affiche le classement finale d'un grand prix, l'affiche est gérer en fonction des positions
+    // des pilotes
 
-    if (indexGrandPrix < 0 || indexGrandPrix >= nb_grandprix) {
-        printf("=== Indice de Grand Prix invalide ===\n");
-        return;
-    }
+    // dans le menu on appelera la fonction avec l'indice - 1 car en humain le GP 1 != GP 1 du tableau
 
     // si actif est different de 1 alors il est inactif
     if (!grandPrix[indexGrandPrix].actif) {
@@ -18,7 +15,9 @@ void displayClassementCourse(int indexGrandPrix) {
         return;
     }
 
-    printf("\n=================== CLASSEMENT DU GRAND PRIX : %s | %s ===================\n",grandPrix[indexGrandPrix].nomCircuit, grandPrix[indexGrandPrix].pays);
+    printf("\n=================== CLASSEMENT DU GRAND PRIX : %s | %s ===================\n",
+        grandPrix[indexGrandPrix].nomCircuit, grandPrix[indexGrandPrix].pays);
+
     printf("Date : %02d/%02d/%04d | Heure : %02d:%02d\n",
         grandPrix[indexGrandPrix].date.jour, grandPrix[indexGrandPrix].date.mois, grandPrix[indexGrandPrix].date.annee,
         grandPrix[indexGrandPrix].horaire.heures, grandPrix[indexGrandPrix].horaire.minutes);

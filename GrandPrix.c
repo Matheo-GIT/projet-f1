@@ -169,25 +169,22 @@ void updateResultGranPrix() {
 }
 
 void deleteGrandPrix(int indexGranPrix) {
-    if (indexGranPrix < 0 || indexGranPrix >= nb_grandprix) {
-        printf("Erreur : index invalide\n");
-        return;
-    }
-    // delete le grand prix
-    printf("\nLe Grand Prix \"%s\" va etre supprimer\n", grandPrix[indexGranPrix].nomCircuit);
-    printf("Les resultats du Grand Prix \"%s\" vont etre supprimer\n\n", grandPrix[indexGranPrix].nomCircuit);
+
+    // delete le grand prix en décalant les grands prix > au grand prix supprimer et en les décalant sur la gauche
+    printf("\nLe Grand Prix \"%s\" ainsi que les resutlats vont etre supprimer\n", grandPrix[indexGranPrix].nomCircuit);
     for (int i = indexGranPrix; i < nb_grandprix - 1; i++) {
         grandPrix[i] = grandPrix[i + 1];
     }
 
-    // delete les résultats du grand prix
+    // même chose que pour supprimer le grand prix mais pour les résultats
     for (int i = indexGranPrix; i < nb_resultat - 1; i++) {
         resultat[i] = resultat[i + 1];
     }
 
-
+    // on réduit la taille logique
     nb_grandprix--;
     nb_resultat--;
+
     printf("Grand Prix supprimer avec succes\n");
     printf("Resultat supprimer avec succes\n\n");
 }
@@ -195,10 +192,7 @@ void deleteGrandPrix(int indexGranPrix) {
 
 // ===== Affiche 1 grand prix =====
 void displayGrandPrix(int indexGrandPrix) {
-    if (nb_grandprix == 0) {
-        printf("Aucun Grand Prix n'est enregistre\n");
-        return;
-    }
+
 
     printf("\n=== Grand Prix %d ===\n", indexGrandPrix + 1);
     printf("Circuit : %s | Pays : %s | Tours : %d\n", grandPrix[indexGrandPrix].nomCircuit,
@@ -216,7 +210,7 @@ void displayGrandPrix(int indexGrandPrix) {
 // ===== Affiche tous les grand prix =====
 void displayTousGrandPrix() {
     if (nb_grandprix == 0) {
-        printf("Aucun Grand Prix n'est enregistre\n");
+        printf("Erreur : aucun Grand Prix n'est enregistre\n");
         return;
     }
 
