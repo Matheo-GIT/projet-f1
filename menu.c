@@ -407,7 +407,7 @@ void menuGrandPrix() {
                 menuDeleteGrandPrix();
                 break;
             case 3:
-                updateResultGranPrix();
+                updateResultGrandPrix();
                 break;
             case 4:
                 menuDisplayTempsGrandPrix();

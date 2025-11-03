@@ -1,7 +1,7 @@
 #include "GrandPrix.h"
 #include "pilote.h"
 #include <string.h>
-
+// initialisation en dur des résultats des Grands Prix
 ResultatCourse resultat[MAX_RESULTATS] = {
     {"Verstappen", "Max", "Pays-Bas", 1, "1:44:12.456", 25},
     {"Leclerc", "Charles", "Monaco", 2, "1:44:18.234", 18},
@@ -17,6 +17,7 @@ ResultatCourse resultat[MAX_RESULTATS] = {
 // quand un pilote est creer il est ajouter ici
 // quand je creer un grand prix je doit ajouter 1 a resultat et créer le tableau
 
+// initialisation en dur de 3 Grands Prix
 GrandPrix grandPrix[MAX_GRANDPRIX] = {
     {
         "Circuit de Monaco",
@@ -88,6 +89,9 @@ int nb_resultat = 3;
 
 void newGrandPrix(const char* nomCircuit, const char* pays, int nombreTours,
                   Date date, Heure horaire, int actif) {
+    // cette fonction permet de créer un Grand Prix et d'initialiser les résultats de celui-ci à 0
+    // elle prend en parametre un nom de circuit, un pays ou se déroule le GP, un nombre de tour,
+    // une date, une heure et un statut d'activité
 
     strcpy(grandPrix[nb_grandprix].nomCircuit, nomCircuit);
     strcpy(grandPrix[nb_grandprix].pays, pays);
@@ -111,7 +115,9 @@ void newGrandPrix(const char* nomCircuit, const char* pays, int nombreTours,
     nb_grandprix++;
 }
 
-void updateResultGranPrix() {
+void updateResultGrandPrix() {
+    // cette fonction permet de mettre a jour les résultats d'un Grand Prix
+
     int h, m, s, ms;
     char nv_temps[20];
     int position = 0;
@@ -148,7 +154,7 @@ void updateResultGranPrix() {
         } while (position <= 0 || position > nb_pilotes || positionPrise[position - 1]);
 
         resultat[i].position = position;
-        positionPrise[position - 1] = 1; // marquer comme utilisée
+        positionPrise[position - 1] = 1; // marquer comme utilisée (1=utilisé et 0=pas utilisé)
 
         // attributions des points selon la position
         switch (position) {
@@ -169,6 +175,8 @@ void updateResultGranPrix() {
 }
 
 void deleteGrandPrix(int indexGranPrix) {
+    // cette fonction permet de supprimer un GP
+    // elle prend en parametre un "index" qui est le choix - 1 du grand prix dans le menu
 
     // delete le grand prix en décalant les grands prix > au grand prix supprimer et en les décalant sur la gauche
     printf("\nLe Grand Prix \"%s\" ainsi que les resutlats vont etre supprimer\n", grandPrix[indexGranPrix].nomCircuit);
@@ -192,7 +200,8 @@ void deleteGrandPrix(int indexGranPrix) {
 
 // ===== Affiche 1 grand prix =====
 void displayGrandPrix(int indexGrandPrix) {
-
+    // cette fonction affiche 1 seul grand prix
+    // elle prend en parametre un "index" qui est le choix - 1 de l'utilisateur dans le menu
 
     printf("\n=== Grand Prix %d ===\n", indexGrandPrix + 1);
     printf("Circuit : %s | Pays : %s | Tours : %d\n", grandPrix[indexGrandPrix].nomCircuit,
@@ -209,6 +218,8 @@ void displayGrandPrix(int indexGrandPrix) {
 
 // ===== Affiche tous les grand prix =====
 void displayTousGrandPrix() {
+    // cette fonction permet d'afficher tous les GP
+
     if (nb_grandprix == 0) {
         printf("Erreur : aucun Grand Prix n'est enregistre\n");
         return;
@@ -241,12 +252,14 @@ void displayTempsPilotes(int numGrandPrix) {
 
     for (int i = 0; i < grandPrix[numGrandPrix].nombreResultat; i++) {
         // strcmp retourne 0 si les chaînes sont identiques sinon retourne > 0
+        // si le temps est à 0 c'est que le pilote n'a pas couru donc on affiche un texte spécial
         if (strcmp(grandPrix[numGrandPrix].resultat[i].tempsRealise, "0:00:00:000") == 0) {
             printf("%-10s %-10s | Tps : %s (n'a pas couru)\n",
                grandPrix[numGrandPrix].resultat[i].prenomPilote,
                grandPrix[numGrandPrix].resultat[i].nomPilote,
                grandPrix[numGrandPrix].resultat[i].tempsRealise);
         }
+        // le pilote a couru donc affiche rien de plus
         else {
             printf("%-10s %-10s | Tps : %s\n",
                    grandPrix[numGrandPrix].resultat[i].prenomPilote,
@@ -258,9 +271,7 @@ void displayTempsPilotes(int numGrandPrix) {
 
 void displayPointsPilotes(int numGrandPrix) {
     // cette fonction affiche le nombre de points de chaque pilote en fonction de leur position
-
-    // il faut que je boucle sur le nombre de pilote et que suivant leur position j'affiche
-    // le bon nombre de point
+    // elle prend en parametre un "numéro" qui est le choix - 1 du GP par l'utilisateur dans le menu
 
     printf("%-8s | %-10s | %s\n", "Prenom", "Nom", "Points");
     for (int i = 0; i < nb_pilotes; i++) {

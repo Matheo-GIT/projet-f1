@@ -5,6 +5,7 @@
 
 void displayClassementCourse(int indexGrandPrix) {
     // cette fonction renvoie le classement à la fin du grand prix
+    // elle prend en parametre un "index" qui le est le choix - 1 de l'utilisateur dans le menu
 
     // si actif vaut 0 alors le GP est inactif donc pas besoin de l'afficher
     if (!grandPrix[indexGrandPrix].actif) {
@@ -55,14 +56,16 @@ void displayClassementCourse(int indexGrandPrix) {
 }
 
 
-// classement général des pilotes
+
 void displayGeneralClassementPilote() {
+    // cette fonction permet d'afficher le classement des pilotes
+
     if (nb_pilotes == 0) {
         printf("Erreur : aucun pilote enregistre\n");
         return;
     }
 
-    // on fait une copie locale des pilotes pour trier
+    // on fait une copie locale des pilotes pour trier (et pour pas modifier le vrai tableau)
     Pilote classement[MAX_PILOTE];
     memcpy(classement, pilotes, sizeof(Pilote) * nb_pilotes);
 
@@ -72,7 +75,7 @@ void displayGeneralClassementPilote() {
     for (int i = 0; i < nb_pilotes - 1; i++) {
         for (int j = 0; j < nb_pilotes - i - 1; j++) {
             if (classement[j].points < classement[j + 1].points) {
-                // création d'une variable temporaire dans pilote
+                // création d'une variable temporaire
                 Pilote temp = classement[j];
                 classement[j] = classement[j + 1];
                 classement[j + 1] = temp;
@@ -101,6 +104,7 @@ int pointsF1(int position) {
     // cette fonction aide a recalculer tous les points des pilotes pour le classement final
     // elle prend la position d'un pilote puis lui calcule ses points depuis sa position
     // pos = 1 = 25 points etc...
+
     switch(position) {
         case 1: return 25;
         case 2: return 18;
@@ -118,6 +122,7 @@ int pointsF1(int position) {
 
 
 void displayClassementEcurie() {
+    // cette fonction renvoie le classements des écuries suivant leur nombre de points
     if (nb_ecurie == 0) {
         printf("Erreur : aucune ecurie enregistree\n");
         return;
@@ -136,9 +141,9 @@ void displayClassementEcurie() {
     for (int i = 0; i < nb_grandprix; i++) {
         if (!grandPrix[i].actif) continue; // <- si le GP est inactif (actif == 0) on l'ignore
 
-        // je boucle sur mon nombre de résultat qui est égale a mon nombre de piltoe
+        // je boucle sur mon nombre de résultat qui est égale a mon nombre de pilote
         for (int j = 0; j < grandPrix[i].nombreResultat; j++) {
-            // pour plus de lisibiliter dans le code, je créer une variable "pos" qui contient la position du pilote
+            // pour plus de lisibilité dans le code, je créer une variable "pos" qui contient la position du pilote
             // cela évite quand on donne en parametre la position du pilote de devoir
             // écrire grandPrix[i].resultat[j].position à chaque fois
             int pos = grandPrix[i].resultat[j].position;
@@ -148,12 +153,13 @@ void displayClassementEcurie() {
                 continue;
             }
 
-            // ici on cherche a trouver l'indice du pilote
+            // ici on cherche a trouver l'indice du pilote (la fonction piloteExiste renvoie
+            // la position du pilote si il existe)
             int idxPilote = piloteExiste(grandPrix[i].resultat[j].nomPilote,
                                         grandPrix[i].resultat[j].prenomPilote);
             if (idxPilote == -1) {
                 // le pilote n'existe pas donc on ignore
-                // (j'ai préferer retourner -1 que 0 au cas ou la position vaux 0)
+                // (j'ai préferer retourner -1 que 0 au cas ou la position = 0)
                 continue;
             }
 
@@ -184,7 +190,7 @@ void displayClassementEcurie() {
         }
     }
 
-    // les points on bien été mis a jour donc on affichage le résultat
+    // les points on bien été mis a jour donc on affiche le résultat
     printf("\n========================= CLASSEMENT DES ECURIES =========================\n");
     printf("%-3s %-20s %s\n", "Pos", "Ecurie", "Points");
     for (int i = 0; i < nb_ecurie; i++) {

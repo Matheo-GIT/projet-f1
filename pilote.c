@@ -6,7 +6,7 @@
 
 #include <stdlib.h>
 
-// gestion complète des pilotes
+// implémentation en dur des pilotes
 
 Pilote pilotes[MAX_PILOTE] = {
     {"Verstappen", "Max", "Pays-Bas", "Red Bull Racing", 0, 1, 27, 1},
@@ -26,6 +26,9 @@ int nb_pilotes = 10;
 
 void newPilote(const char* nom, const char* prenom, const char* nationalite,
                const char* ecurie, int points, int numero, int age, int actif) {
+    // cette fonction créer un pilote, elle prend en parametre un nim, prenom, nationnalite, écurie
+    // nombre de points, un numéro, un age et un statu d'activité
+    // la fonction ne renvoie rien.
 
     strcpy(pilotes[nb_pilotes].nom, nom);
     strcpy(pilotes[nb_pilotes].prenom, prenom);
@@ -58,18 +61,22 @@ void updatePointsOfPilote(int pilote, int editPoints) {
     // cette fonction modifie les points d'un pilote
     // puis elle additionne les points des 2 pilotes avec la meme écurie pour les additionner
     // et former les nouveaux points totaux de l'écurie
+    // le parametre "pilote" est le choix - 1 dans le menu pilote et le parametre
+    // "editPoints" est le nouveau nombre de points donné par l'utilisateur
 
     pilotes[pilote].points = editPoints;
-    char* nomEcurie = pilotes[pilote].ecurie;
+    char* nomEcurie = pilotes[pilote].ecurie; // pour plus de simpliciter
     int pointTotal = 0;
 
+    // si le nom de l'écurie du pilote est égale à son écurie alors on ajoutes les points du pilote
     for (int i = 0; i < nb_pilotes; i++) {
-        if (strcmp(pilotes[i].ecurie, nomEcurie) == 0
-) {
+        if (strcmp(pilotes[i].ecurie, nomEcurie) == 0) {
             pointTotal += pilotes[i].points;
         }
     }
 
+    // on boucle sur les écuries et si le nom de l'écurie est la même que celle
+    // du pilote alors on lui ajoute les points des pilotes
     for (int i = 0; i < nb_ecurie; i++) {
         if (strcmp(nomEcurie, ecuries[i].Nom) == 0) {
             ecuries[i].Points = pointTotal;
@@ -83,6 +90,9 @@ void updatePointsOfPilote(int pilote, int editPoints) {
 }
 
 void deletePilote(int index) {
+    // cette fonction supprime un pilote de la liste
+    // pour supprimer un pilote on décale juste les autres pilotes vers la gauche
+    // le parametre "index" est le choix - 1 dans le menu
     if (index < 0 || index >= nb_pilotes) {
         printf("Erreur : l'index est invalide\n");
         return;
@@ -99,6 +109,8 @@ void deletePilote(int index) {
 
 // ===== Affiche 1 pilote =====
 void displayPilote(int index) {
+    // cette fonction permet d'afficher les informations d'un seul pilote
+    // le parametre "index" est le choix - 1 dans le menu
     printf("Nom : %-12s | Prenom : %-8s | Nationalite : %-11s | Ecurie : %-16s | Points : %3d | Numero : %3d | Age : %3d | Actif : %d\n",
            pilotes[index].nom,
            pilotes[index].prenom,
@@ -113,13 +125,15 @@ void displayPilote(int index) {
 
 // ===== Affiche tous les pilotes =====
 void displayTousPilotes() {
+    // cette fonction permet d'afficher les informations de tous les pilotes
     for (int i = 0; i < nb_pilotes; i++) {
         displayPilote(i);
     }
 }
 
-// ===== Autre fonction qui serve pour les inputs =====
+// ===== autre fonction qui serve pour les inputs =====
 int piloteExiste(const char* nom, const char* prenom) {
+    // cette fonction permet de vérifier si un pilote existe, grace à un nom et prénom
     for (int i = 0; i < nb_pilotes; i++) {
         if (strcmp(pilotes[i].nom, nom) == 0 && strcmp(pilotes[i].prenom, prenom) == 0) {
             return i;
